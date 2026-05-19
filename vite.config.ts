@@ -1,10 +1,15 @@
-import { defineConfig } from '@tanstack/start/config'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 
 export default defineConfig({
-  vite: {
-    plugins: [
-      tsconfigPaths(),
-    ],
-  },
+  plugins: [
+    TanStackRouterVite(),
+    react(),
+    tsconfigPaths(),
+  ],
+  build: {
+    outDir: 'dist', // We will use a standard static build to make it easier for Vercel
+  }
 })
