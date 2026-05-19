@@ -7,7 +7,7 @@ const LINKS = [
   { to: "/yearbook", label: "Yearbook" },
   { to: "/memories", label: "Memories" },
   { to: "/wall", label: "Wall" },
-  { to: "/letter", label: "Letter" },
+  
 ] as const;
 
 export default function TopNav() {
