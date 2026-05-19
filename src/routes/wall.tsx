@@ -6,7 +6,7 @@ import CLOUDS from "vanta/dist/vanta.clouds.min";
 import { motion, AnimatePresence } from "framer-motion";
 import TopNav from "@/components/TopNav";
 import { Reveal, FONT_LINKS } from "@/components/tribute-ui";
-import { supabase } from "./supabaseClient"; // Fixed import for your folder structure
+import { supabase } from "../lib/supabaseClient"; // Fixed import for your folder structure
 
 export const Route = createFileRoute("/wall")({
   head: () => ({
