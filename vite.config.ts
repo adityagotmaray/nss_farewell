@@ -1,9 +1,15 @@
 import { defineConfig } from '@tanstack/start/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
+  vite: {
+    plugins: [
+      tsconfigPaths(),
+    ],
+  },
   start: {
     server: {
-      preset: 'vercel' // Change this line from 'cloudflare' or 'nitro' to 'vercel'
+      preset: 'vercel'
     }
   }
 })
