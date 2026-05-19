@@ -7,9 +7,4 @@ export default defineConfig({
       tsconfigPaths(),
     ],
   },
-  start: {
-    server: {
-      preset: 'vercel'
-    }
-  }
 })
