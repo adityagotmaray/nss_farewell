@@ -36,10 +36,16 @@ function JourneyPage() {
           THREE: THREE,
           mouseControls: true,
           touchControls: true,
-          backgroundColor: 0x02040a,
-          skyColor: 0x050a1a,
-          cloudColor: 0x1e293b,
-          speed: 1.2
+          minHeight: 200.0,
+          minWidth: 200.0,
+          // UPDATED: MIDNIGHT BLUE NIGHT SKY THEME
+          backgroundColor: 0x010c1e, // Very Dark Blue
+          skyColor: 0x001f3f,       // Deep Navy Sky
+          cloudColor: 0x112240,     // Dusky Blue Clouds
+          cloudShadowColor: 0x010c1e,
+          sunColor: 0xffd700,       // Moonlight/Gold
+          sunlightColor: 0x233554,  // Soft blue moonlight glow on clouds
+          speed: 1.0
         })
       );
     }
@@ -52,35 +58,39 @@ function JourneyPage() {
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
 
-      {/* BACKGROUND LAYERS */}
+      {/* 1. MIDNIGHT BLUE CLOUD LAYER */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
-      <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none opacity-40" />
+      
+      {/* 2. ATMOSPHERIC OVERLAY */}
+      <div className="fixed inset-0 bg-black/40 pointer-events-none z-[1]" />
+
+      {/* 3. SHINING STARS LAYER */}
+      <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none" />
 
       <div className="relative z-10">
         
         {/* SECTION 1: HERO */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
           <Reveal>
-            {/* UPDATED: THE HORIZONTAL CYLINDER (NSS THEME) */}
-            <div className="mb-8 px-6 py-2 border border-white/10 rounded-full bg-[#0a1a3b] shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-md">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.4em] font-black">
-                    <span className="text-white">National Service Scheme</span>
-                    <span className="text-white/20 mx-3">•</span>
-                    <span className="text-[#ff5252]">Batch 2022—2026</span>
+            {/* REVERTED: TRANSPARENT GOLD CYLINDER */}
+            <div className="mb-8 px-6 py-2 border border-accent/30 rounded-full bg-accent/5 backdrop-blur-md shadow-[0_0_30px_rgba(212,175,55,0.1)]">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.4em] font-bold text-accent">
+                   National Service Scheme • Batch 2022—2026
                 </p>
             </div>
           </Reveal>
 
           <Reveal delay={200}>
+            {/* REVERTED: SHINING GOLD TITLE */}
             <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none mb-4">
-              <span className="text-shiny-gold italic">Eminence</span>
+              <span className="text-white drop-shadow-2xl">NSS</span><br/>
+              <span className="text-shiny-gold italic">Farewell</span>
             </h1>
           </Reveal>
 
           <Reveal delay={400}>
             <p className="font-display italic text-3xl sm:text-5xl mt-2 text-white/90 tracking-widest drop-shadow-md">
-              Farewell - 2026
+              2022 — 2026
             </p>
           </Reveal>
 
@@ -152,12 +162,14 @@ function JourneyPage() {
           background-image: 
             radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
             radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0));
+            radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1.5px 1.5px at 90px 40px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0));
           background-repeat: repeat;
           background-size: 300px 300px;
         }
-        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.7; } }
-        .animate-twinkle { animation: twinkle 4s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.6; } }
+        .animate-twinkle { animation: twinkle 5s ease-in-out infinite; }
       `}</style>
     </div>
   );
