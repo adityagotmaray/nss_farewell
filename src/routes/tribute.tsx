@@ -4,8 +4,8 @@ import * as THREE from "three";
 // @ts-ignore
 import CLOUDS from "vanta/dist/vanta.clouds.min";
 import { motion } from "framer-motion";
-import TopNav from "../components/TopNav.tsx"; // Fixed relative path
-import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx"; // Fixed relative path
+import TopNav from "../components/TopNav.tsx";
+import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx";
 
 export const Route = createFileRoute("/tribute")({
   head: () => ({
@@ -15,9 +15,6 @@ export const Route = createFileRoute("/tribute")({
   component: JourneyPage,
 });
 
-// ==========================================================
-// BACKEND: EDIT YOUR TIMELINE HERE
-// ==========================================================
 const TIMELINE = [
   { year: "2022", title: "The Beginning", body: "First orientation, first uniform, first NSS pledge — where it all started." },
   { year: "2023", title: "First NSS Camp", body: "Seven days, one village, countless memories. The camp that turned strangers into family." },
@@ -55,13 +52,9 @@ function JourneyPage() {
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
 
-      {/* 1. CLOUD LAYER */}
+      {/* BACKGROUND LAYERS */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      
-      {/* 2. DARK OVERLAY */}
       <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
-
-      {/* 3. TWINKLE STARS LAYER */}
       <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none opacity-40" />
 
       <div className="relative z-10">
@@ -69,19 +62,21 @@ function JourneyPage() {
         {/* SECTION 1: HERO */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
           <Reveal>
-            <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-accent/5 backdrop-blur-sm">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-medium">
-                    National Service Scheme • Batch 2022—2026
+            {/* UPDATED: THE HORIZONTAL CYLINDER (NSS THEME) */}
+            <div className="mb-8 px-6 py-2 border border-white/10 rounded-full bg-[#0a1a3b] shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-md">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.4em] font-black">
+                    <span className="text-white">National Service Scheme</span>
+                    <span className="text-white/20 mx-3">•</span>
+                    <span className="text-[#ff5252]">Batch 2022—2026</span>
                 </p>
             </div>
           </Reveal>
 
           <Reveal delay={200}>
-            {/* UPDATED: NSS COLOR THEME IN HEADER */}
             <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none mb-4">
               <span className="drop-shadow-2xl">
-                <span className="text-nss-navy">N</span>
-                <span className="text-nss-red">SS</span>
+                <span className="text-[#5c7cfa]">N</span>
+                <span className="text-[#ff5252]">SS</span>
               </span><br/>
               <span className="text-shiny-gold italic">Farewell</span>
             </h1>
@@ -131,7 +126,7 @@ function JourneyPage() {
                     <span className="font-script text-accent text-4xl block mb-2">{t.year}</span>
                     <h3 className="font-display text-2xl sm:text-4xl text-white tracking-tight">{t.title}</h3>
                   </div>
-                  <div className="p-6 rounded-2xl bg-black/30 border border-white/5 backdrop-blur-md shadow-2xl hover:bg-black/50 transition-all group">
+                  <div className="p-8 rounded-3xl bg-black/40 border border-white/5 backdrop-blur-md shadow-2xl hover:bg-black/60 transition-all group">
                     <p className="text-white/70 leading-relaxed text-base sm:text-lg italic group-hover:text-white transition-colors">
                       {t.body}
                     </p>
@@ -157,6 +152,16 @@ function JourneyPage() {
           -webkit-text-fill-color: transparent;
           animation: shine 4s linear infinite;
         }
+        .stars-layer {
+          background-image: 
+            radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0));
+          background-repeat: repeat;
+          background-size: 300px 300px;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.7; } }
+        .animate-twinkle { animation: twinkle 4s ease-in-out infinite; }
       `}</style>
     </div>
   );
