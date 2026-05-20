@@ -1,15 +1,19 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
+@import "tailwindcss";
+
+/* 
+  Removed "@import tw-animate-css" because it was causing the Vercel build crash. 
+  We will use standard Tailwind and custom CSS for animations instead.
+*/
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
+  
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -29,24 +33,21 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-nss-navy: var(--nss-navy);
-  --color-nss-red: var(--nss-red);
-  --color-nss-cream: var(--nss-cream);
-  --color-nss-gold: var(--nss-gold);
-  --font-display: var(--font-display);
-  --font-script: var(--font-script);
-  --font-body: var(--font-body);
+  
+  /* NSS palette */
+  --color-nss-navy: oklch(0.22 0.09 264);
+  --color-nss-navy-deep: oklch(0.14 0.06 264);
+  --color-nss-red: oklch(0.58 0.21 27);
+  --color-nss-cream: oklch(0.96 0.02 85);
+  --color-nss-gold: oklch(0.82 0.13 78);
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-script: "Caveat", "Comic Sans MS", cursive;
+  --font-body: "Inter", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.75rem;
-
-  /* NSS palette */
-  --nss-navy: oklch(0.22 0.09 264);
-  --nss-navy-deep: oklch(0.14 0.06 264);
-  --nss-red: oklch(0.58 0.21 27);
-  --nss-cream: oklch(0.96 0.02 85);
-  --nss-gold: oklch(0.82 0.13 78);
 
   --background: oklch(0.12 0.04 264);
   --foreground: oklch(0.96 0.02 85);
@@ -68,18 +69,12 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.82 0.13 78);
 
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-script: "Caveat", "Comic Sans MS", cursive;
-  --font-body: "Inter", system-ui, sans-serif;
-
   --gradient-hero: radial-gradient(ellipse at 50% 30%, oklch(0.28 0.1 264 / 0.7), transparent 60%),
                    linear-gradient(180deg, oklch(0.10 0.04 264), oklch(0.18 0.06 264));
   --gradient-gold: linear-gradient(135deg, oklch(0.88 0.13 78), oklch(0.72 0.16 60));
   --shadow-glow: 0 0 60px -10px oklch(0.82 0.13 78 / 0.4);
   --shadow-card: 0 20px 60px -20px oklch(0 0 0 / 0.7);
 }
-
-.dark { }
 
 @layer base {
   * { border-color: var(--color-border); }
@@ -90,46 +85,46 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); }
-  .font-script { font-family: var(--font-script); }
   .text-gradient-gold {
     background: var(--gradient-gold);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .bg-hero { background: var(--gradient-hero); }
-  .shadow-glow { box-shadow: var(--shadow-glow); }
-  .shadow-card { box-shadow: var(--shadow-card); }
-
+  
   .starfield {
     background-image:
       radial-gradient(1px 1px at 10% 20%, #fff7, transparent),
       radial-gradient(1px 1px at 30% 70%, #fff5, transparent),
       radial-gradient(1.5px 1.5px at 60% 30%, #fff8, transparent),
       radial-gradient(1px 1px at 80% 60%, #fff5, transparent),
-      radial-gradient(1px 1px at 90% 10%, #fff7, transparent),
-      radial-gradient(1.5px 1.5px at 20% 90%, #fff6, transparent),
-      radial-gradient(1px 1px at 50% 50%, #fff4, transparent);
+      radial-gradient(1px 1px at 90% 10%, #fff7, transparent);
     background-size: 800px 800px;
     animation: drift 60s linear infinite;
   }
 
   @keyframes drift {
-    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
-    to   { background-position: 800px 800px, -800px 800px, 800px -800px, -800px -800px, 400px 400px, -400px -400px, 200px -200px; }
+    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+    to   { background-position: 800px 800px, -800px 800px, 800px -800px, -800px -800px, 400px 400px; }
   }
 
   .polaroid {
-    background: var(--nss-cream);
+    background: oklch(0.96 0.02 85);
     color: oklch(0.18 0.04 264);
     padding: 12px 12px 36px;
     box-shadow: var(--shadow-card);
     transition: transform .4s ease;
   }
-  .polaroid:hover { transform: translateY(-4px) rotate(0deg) scale(1.02); }
+  .polaroid:hover { transform: translateY(-4px) scale(1.02); }
+
+  /* Custom Shine Animation for Gold Text */
+  @keyframes shine {
+    to { background-position: 200% center; }
+  }
+  .animate-shine {
+    animation: shine 5s linear infinite;
+  }
 }
