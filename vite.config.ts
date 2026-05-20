@@ -9,7 +9,4 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
   ],
-  build: {
-    outDir: 'dist', // We will use a standard static build to make it easier for Vercel
-  }
 })
