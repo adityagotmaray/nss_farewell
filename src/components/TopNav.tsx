@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import nssLogo from "@/assets/nss-logo.png";
+import nssLogo from "../assets/nss-logo.png";
 
 const LINKS = [
   { to: "/tribute", label: "Journey" },
