@@ -4,8 +4,8 @@ import * as THREE from "three";
 // @ts-ignore
 import CLOUDS from "vanta/dist/vanta.clouds.min";
 import { motion } from "framer-motion";
-import TopNav from "../components/TopNav";
-import { Reveal, FONT_LINKS } from "../components/Tribute-UI";
+import TopNav from "../components/TopNav.tsx"; // Fixed relative path
+import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx"; // Fixed relative path
 
 export const Route = createFileRoute("/tribute")({
   head: () => ({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/tribute")({
 });
 
 // ==========================================================
-// BACKEND: ADD MORE YEARS OR EDIT TEXT HERE
+// BACKEND: EDIT YOUR TIMELINE HERE
 // ==========================================================
 const TIMELINE = [
   { year: "2022", title: "The Beginning", body: "First orientation, first uniform, first NSS pledge — where it all started." },
@@ -24,7 +24,6 @@ const TIMELINE = [
   { year: "2024", title: "Drives & Dedication", body: "Swachh Bharat, blood donation, tree plantation — every weekend was a mission." },
   { year: "2025", title: "Leading the Way", body: "As seniors, you led the unit — organising, mentoring, inspiring every junior." },
   { year: "2026", title: "The Farewell", body: "The uniform comes off, but the spirit stays. Thank you for everything." },
-  // 💡 To extend: Copy one line above, paste it here, and change the year/text!
 ];
 
 function JourneyPage() {
@@ -43,7 +42,7 @@ function JourneyPage() {
           backgroundColor: 0x02040a,
           skyColor: 0x050a1a,
           cloudColor: 0x1e293b,
-          speed: 1.2 // Exact same speed as Wall
+          speed: 1.2
         })
       );
     }
@@ -56,51 +55,67 @@ function JourneyPage() {
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
 
-      {/* FIXED LIVE BACKGROUND - Exact Match to Wall */}
+      {/* 1. CLOUD LAYER */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
+      
+      {/* 2. DARK OVERLAY */}
       <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
 
+      {/* 3. TWINKLE STARS LAYER */}
+      <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none opacity-40" />
+
       <div className="relative z-10">
+        
+        {/* SECTION 1: HERO */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
           <Reveal>
             <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-accent/5 backdrop-blur-sm">
                 <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-medium">
-                    National Service Scheme • Batch 2022—226
+                    National Service Scheme • Batch 2022—2026
                 </p>
             </div>
           </Reveal>
 
           <Reveal delay={200}>
-            <h1 className="font-display text-6xl sm:text-8xl md:text-9xl tracking-tighter leading-none text-white">
-               <span className="text-gradient-gold italic">Eminence</span>
+            {/* UPDATED: NSS COLOR THEME IN HEADER */}
+            <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none mb-4">
+              <span className="drop-shadow-2xl">
+                <span className="text-nss-navy">N</span>
+                <span className="text-nss-red">SS</span>
+              </span><br/>
+              <span className="text-shiny-gold italic">Farewell</span>
             </h1>
           </Reveal>
 
-          <Reveal delay={200}>
-            <p className="font-display italic text-4xl sm:text-5xl mt-4 text-white/90 tracking-widest">
-              2k26
+          <Reveal delay={400}>
+            <p className="font-display italic text-3xl sm:text-5xl mt-2 text-white/90 tracking-widest drop-shadow-md">
+              2022 — 2026
             </p>
           </Reveal>
 
-          <Reveal delay={200}>
+          <Reveal delay={600}>
             <button 
               onClick={scrollToStory}
-              className="mt-12 px-10 py-4 bg-accent text-black font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(212,175,55,0.4)]"
+              className="mt-16 px-12 py-4 bg-accent text-black font-black uppercase tracking-widest rounded-full hover:scale-110 hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] transition-all active:scale-95"
             >
               Relive Memories
             </button>
           </Reveal>
         </section>
 
+        {/* SECTION 2: THE JOURNEY TITLE */}
         <div ref={storyRef} className="pt-32 pb-24 px-6 text-center">
-            <p className="font-script text-accent text-3xl mb-4">the story of</p>
-            <h1 className="font-display text-5xl sm:text-8xl relative inline-block text-white">
-                <span className="italic bg-clip-text text-transparent bg-gradient-to-r from-accent via-white to-accent bg-[length:200%_auto] animate-shine">
-                    Their NSS Journey
-                </span>
-            </h1>
+            <Reveal>
+                <p className="font-script text-accent text-4xl mb-4">the story of</p>
+                <h1 className="font-display text-6xl sm:text-9xl text-white">
+                    <span className="italic text-shiny-gold">
+                        Their NSS Journey
+                    </span>
+                </h1>
+            </Reveal>
         </div>
 
+        {/* SECTION 3: THE TIMELINE */}
         <section className="relative pb-40 px-6 max-w-5xl mx-auto">
           <div className="absolute left-4 sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
           
@@ -129,13 +144,19 @@ function JourneyPage() {
 
         <footer className="py-20 text-center border-t border-white/5 bg-black/40">
             <p className="font-script text-accent text-3xl mb-4 italic">Not Me, But You</p>
-            <p className="text-[10px] uppercase tracking-[0.5em] text-white/20">NSS Farewell · Batch 2022 — 2026</p>
+            <p className="text-[10px] uppercase tracking-[0.5em] text-white/20 italic">NSS Farewell · Batch 2022 — 2026</p>
         </footer>
       </div>
 
       <style>{`
         @keyframes shine { to { background-position: 200% center; } }
-        .animate-shine { animation: shine 4s linear infinite; }
+        .text-shiny-gold {
+          background: linear-gradient(90deg, #d4af37 0%, #fdfc97 50%, #d4af37 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shine 4s linear infinite;
+        }
       `}</style>
     </div>
   );
