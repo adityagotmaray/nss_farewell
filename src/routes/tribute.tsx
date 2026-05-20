@@ -80,7 +80,7 @@ function JourneyPage() {
 
           <Reveal delay={200}>
             <p className="font-display italic text-4xl sm:text-5xl mt-4 text-white/90 tracking-widest">
-              2k26
+              Farewell - 2k26
             </p>
           </Reveal>
 
