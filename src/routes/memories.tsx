@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import TopNav from "@/components/TopNav";
-import { Reveal, FONT_LINKS } from "@/components/tribute-ui";
+import TopNav from "../components/TopNav";
+import { Reveal, FONT_LINKS } from "../components/tribute-ui";
 
 export const Route = createFileRoute("/memories")({
   head: () => ({
