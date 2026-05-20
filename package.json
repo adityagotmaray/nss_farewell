@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
   "dev": "vite dev",
-  "build": "npx tsr generate && vite build",
-  "preview": "vite preview"
+  "build": "vite build",
+  "preview": "vite preview",
+  "lint": "eslint .",
+  "format": "prettier --write ."
 },
+
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
     "@tanstack/react-query": "latest",
