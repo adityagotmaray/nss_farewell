@@ -19,12 +19,26 @@ export const Route = createFileRoute("/yearbook")({
 // BACKEND: ADD SENIORS HERE
 // ==========================================
 const SENIORS = [
-  { name: "Arjun Mehta", major: "Computer Science", role: "PO", photo: "" },
-  { name: "Priya Sharma", major: "Biotechnology", role: "SEC", photo: "" },
-  { name: "Rohit Verma", major: "Mechanical Engg.", role: "VOL", photo: "" },
-  { name: "Sneha Nair", major: "Electronics", role: "CORD", photo: "" },
-  { name: "Aaditya G.", major: "Computer Science", role: "VOL", photo: "" },
-  // 💡 Add more seniors...
+  { name: "Dr. Anand Tamrakar", major: "EDIT MAJOR", role: "PO", photo: "" },
+  { name: "Mr. Ayush Sahu", major: "EDIT MAJOR", role: "SEC", photo: "" },
+  { name: "Dhanendra kumar sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Chhanendra sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Julie prajapati", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Ashi sao", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Atul singh rajput", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Aastha singh", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Richa sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Devesh baghel", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Harsh sonwanshi", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "K Abhilash", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Milind sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Ayush shinde", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Anand sharma", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Bhupesh sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Dharninee", major: "EDIT MAJOR", role: "VOL", photo: "" },
+  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "" }, // Blank 1
+  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "" }, // Blank 2
+  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "" }, // Blank 3
 ];
 
 function YearbookPage() {
@@ -76,7 +90,7 @@ function YearbookPage() {
             </Reveal>
           </div>
 
-          {/* SEARCH & PILL FILTERS (Screenshot Style) */}
+          {/* SEARCH & PILL FILTERS */}
           <div className="max-w-4xl mx-auto mb-16 space-y-6">
             <div className="relative">
               <input 
@@ -96,7 +110,7 @@ function YearbookPage() {
                     filter === r ? "bg-accent text-black border-accent" : "bg-white/5 text-white/40 border-white/10 hover:border-white/30"
                   }`}
                 >
-                  {r.toUpperCase()}
+                  {r?.toUpperCase()}
                 </button>
               ))}
             </div>
