@@ -5,7 +5,7 @@ import * as THREE from "three";
 import CLOUDS from "vanta/dist/vanta.clouds.min";
 import { motion } from "framer-motion";
 import TopNav from "../components/TopNav";
-import { Reveal, FONT_LINKS, initials, Typewriter } from "../components/Tribute-UI";
+import { Reveal, FONT_LINKS } from "../components/Tribute-UI";
 
 export const Route = createFileRoute("/tribute")({
   head: () => ({
@@ -65,24 +65,24 @@ function JourneyPage() {
           <Reveal>
             <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-accent/5 backdrop-blur-sm">
                 <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-medium">
-                    National Service Scheme • Batch 2022—2026
+                    National Service Scheme • Batch 2022—226
                 </p>
             </div>
           </Reveal>
 
           <Reveal delay={200}>
             <h1 className="font-display text-6xl sm:text-8xl md:text-9xl tracking-tighter leading-none text-white">
-              NSS <span className="text-gradient-gold italic">Farewell</span>
+               <span className="text-gradient-gold italic">Eminence</span>
             </h1>
           </Reveal>
 
-          <Reveal delay={400}>
-            <p className="font-display italic text-3xl sm:text-5xl mt-4 text-white/90 tracking-widest">
-              2022 — 2026
+          <Reveal delay={200}>
+            <p className="font-display italic text-4xl sm:text-5xl mt-4 text-white/90 tracking-widest">
+              2k26
             </p>
           </Reveal>
 
-          <Reveal delay={800}>
+          <Reveal delay={200}>
             <button 
               onClick={scrollToStory}
               className="mt-12 px-10 py-4 bg-accent text-black font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(212,175,55,0.4)]"
