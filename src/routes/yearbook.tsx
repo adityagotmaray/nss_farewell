@@ -132,7 +132,7 @@ function YearbookPage() {
                     {/* Background Content (Photo or Massive Initials) */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       {s.photo ? (
-                        <img src={s.photo} alt={s.name} className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                        <img src={s.photo} alt={s.name} className="h-full w-full object-cover transition-all duration-700" />
                       ) : (
                         <span className="font-display text-[120px] text-white/[0.03] select-none tracking-tighter group-hover:text-white/[0.07] transition-colors">
                           {initials}
