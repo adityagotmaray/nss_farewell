@@ -5,10 +5,8 @@
   "type": "module",
   "scripts": {
   "dev": "vite dev",
-  "build": "vite build",
-  "preview": "vite preview",
-  "lint": "eslint .",
-  "format": "prettier --write ."
+  "build": "npx tsr generate && vite build",
+  "preview": "vite preview"
 },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
