@@ -21,7 +21,7 @@ export const Route = createFileRoute("/yearbook")({
 const SENIORS = [
   { name: "Dr. Anand Tamrakar", major: "EDIT MAJOR", role: "PO", photo: "" },
   { name: "Mr. Ayush Sahu", major: "EDIT MAJOR", role: "SEC", photo: "" },
-  { name: "Dhanendra kumar sahu", major: "CSE", role: "Dal Nayak", photo: "https://drive.google.com/file/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv/view?usp=drive_link" },
+  { name: "Dhanendra kumar sahu", major: "CSE", role: "Dal Nayak", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
   { name: "Chhanendra sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
   { name: "Julie prajapati", major: "EDIT MAJOR", role: "VOL", photo: "" },
   { name: "Ashi sao", major: "EDIT MAJOR", role: "VOL", photo: "" },
