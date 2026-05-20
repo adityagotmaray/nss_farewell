@@ -75,16 +75,15 @@ function JourneyPage() {
           <Reveal delay={200}>
             <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none mb-4">
               <span className="drop-shadow-2xl">
-                <span className="text-[#5c7cfa]">N</span>
-                <span className="text-[#ff5252]">SS</span>
+                
               </span><br/>
-              <span className="text-shiny-gold italic">Farewell</span>
+              <span className="text-shiny-gold italic">Eminence</span>
             </h1>
           </Reveal>
 
           <Reveal delay={400}>
             <p className="font-display italic text-3xl sm:text-5xl mt-2 text-white/90 tracking-widest drop-shadow-md">
-              2022 — 2026
+              Farewell - 2026
             </p>
           </Reveal>
 
