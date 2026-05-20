@@ -74,9 +74,6 @@ function JourneyPage() {
 
           <Reveal delay={200}>
             <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none mb-4">
-              <span className="drop-shadow-2xl">
-                
-              </span><br/>
               <span className="text-shiny-gold italic">Eminence</span>
             </h1>
           </Reveal>
