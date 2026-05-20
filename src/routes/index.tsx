@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import nssLogo from "@/assets/nss-logo.png";
-import heroBg from "@/assets/hero-bg.jpg";
+import nssLogo from "../assets/nss-logo.png";
+import heroBg from "../assets/hero-bg.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
