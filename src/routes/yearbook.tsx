@@ -5,7 +5,7 @@ import * as THREE from "three";
 import CLOUDS from "vanta/dist/vanta.clouds.min";
 import { motion, AnimatePresence } from "framer-motion";
 import TopNav from "../components/TopNav";
-import { Reveal, FONT_LINKS, initials, Typewriter } from "../components/Tribute-UI";
+import { Reveal, FONT_LINKS } from "../components/Tribute-UI";
 
 export const Route = createFileRoute("/yearbook")({
   head: () => ({
@@ -64,7 +64,7 @@ function YearbookPage() {
           <div className="text-center mb-12">
             <Reveal>
               <p className="text-accent text-[10px] uppercase tracking-[0.5em] font-bold mb-4">Batch 2022—2026</p>
-              <h1 className="font-display text-6xl sm:text-8xl text-white tracking-tighter mb-4">NSS Yearbook</h1>
+              <h1 className="font-display text-6xl sm:text-8xl text-white tracking-tighter mb-4">Yearbook</h1>
             </Reveal>
           </div>
 
