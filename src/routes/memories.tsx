@@ -19,7 +19,7 @@ export const Route = createFileRoute("/memories")({
 // ============================================================
 // CONFIGURATION: PASTE YOUR LINKS HERE
 // ============================================================
-const GOOGLE_SCRIPT_URL = "PASTE_YOUR_NEW_WEB_APP_URL_HERE";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5CKSUXqCFBmycUnoGcTUnL1G1Vcjd3ATR0d_qMJazkd8mX_RijbXuGeUmsq45EB4g/exec";
 const PARENT_DRIVE_FOLDER_ID = "1yCcnLb29ST1wPBGolNlpsgSbufVuoLwj";
 
 function MemoriesPage() {
