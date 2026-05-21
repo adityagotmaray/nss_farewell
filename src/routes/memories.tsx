@@ -18,7 +18,7 @@ export const Route = createFileRoute("/memories")({
 // ============================================================
 // CONFIGURATION: PASTE YOUR LINKS HERE
 // ============================================================
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVLWDHg21c1AepdqtmW7brybekAn0bJAkus-Yfn4geEb-vwdK_iW9VqwuwKh-mjERB/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyU5x-DPQJy1AsQbcce6ZZMU0gyoAa9BZaRFkaSALfWMbwFZphRoaIKGDUsB8AJyg3j/exec";
 const PARENT_DRIVE_FOLDER_ID = "1yCcnLb29ST1wPBGolNlpsgSbufVuoLwj";
 // ============================================================
 
