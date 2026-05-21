@@ -4,6 +4,7 @@ import * as THREE from "three";
 // @ts-ignore
 import CLOUDS from "vanta/dist/vanta.clouds.min";
 import { motion, AnimatePresence } from "framer-motion";
+import { Download, X, ChevronLeft } from "lucide-react";
 import TopNav from "../components/TopNav.tsx";
 import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx";
 
@@ -15,12 +16,8 @@ export const Route = createFileRoute("/memories")({
   component: MemoriesPage,
 });
 
-// ============================================================
-// CONFIGURATION: PASTE YOUR LINKS HERE
-// ============================================================
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyU5x-DPQJy1AsQbcce6ZZMU0gyoAa9BZaRFkaSALfWMbwFZphRoaIKGDUsB8AJyg3j/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxl4NGrvu29omJKcYHvSPY9o7Rc8hqTfSpQJuA3SPcTrnlVqEI_WTwXE0bQGspuQGsS/exec";
 const PARENT_DRIVE_FOLDER_ID = "1yCcnLb29ST1wPBGolNlpsgSbufVuoLwj";
-// ============================================================
 
 function MemoriesPage() {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
@@ -28,17 +25,12 @@ function MemoriesPage() {
   const [albums, setAlbums] = useState<any[]>([]);
   const [activeAlbumId, setActiveAlbumId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<any>(null);
 
-  // Fetch albums and media recursively from Google Drive
   useEffect(() => {
     fetch(`${GOOGLE_SCRIPT_URL}?id=${PARENT_DRIVE_FOLDER_ID}`)
       .then(res => res.json())
-      .then(data => {
-        setAlbums(data);
-        setLoading(false);
-      })
-      .catch(err => console.error("Vault Error:", err));
+      .then(data => { setAlbums(data); setLoading(false); });
   }, []);
 
   useEffect(() => {
@@ -64,78 +56,113 @@ function MemoriesPage() {
           
           <div className="text-center mb-16">
             <Reveal>
-              <h1 className="font-display text-6xl sm:text-8xl text-white tracking-tighter mb-4">
+              <h1 className="font-display text-5xl sm:text-8xl text-white tracking-tighter mb-4">
                 {activeAlbum ? activeAlbum.title : "Memories Vault"}
               </h1>
-              <p className="font-script text-accent text-2xl italic">
-                {activeAlbum ? "Reliving every moment." : "Opening the chapters of your journey."}
-              </p>
             </Reveal>
             
             {activeAlbumId && (
               <button onClick={() => setActiveAlbumId(null)}
-                className="mt-8 px-6 py-2 border border-accent/40 rounded-full text-accent hover:bg-accent hover:text-black transition-all uppercase tracking-widest text-[10px] font-black"
+                className="mt-4 flex items-center gap-2 mx-auto text-accent hover:text-white transition-all uppercase tracking-widest text-[10px] font-bold"
               >
-                ← Return to Vault
+                <ChevronLeft size={14} /> Return to Vault
               </button>
             )}
           </div>
 
           <AnimatePresence mode="wait">
             {loading ? (
-              <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-accent/30 animate-pulse mt-20 font-display">
-                Scanning Drive Folders...
+              <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-accent/30 animate-pulse mt-20">
+                Scanning the Chapters...
               </motion.div>
             ) : !activeAlbumId ? (
-              /* ALBUMLIST (THE VAULT) */
               <motion.div key="vault" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
               >
                 {albums.map((album) => (
                   <div key={album.id} onClick={() => setActiveAlbumId(album.id)}
-                    className="group cursor-pointer relative aspect-square rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl hover:-translate-y-2 transition-all bg-white/5"
+                    className="group cursor-pointer relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 hover:-translate-y-2 transition-all shadow-2xl"
                   >
-                    <img src={album.cover} className="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-10">
-                      <p className="text-accent text-[10px] tracking-[0.3em] font-bold mb-2 uppercase">COLLECTION</p>
-                      <h3 className="font-display text-4xl text-white tracking-tight">{album.title}</h3>
+                    <img src={album.cover} className="absolute inset-0 h-full w-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-1000" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-8">
+                      <p className="text-accent text-[10px] tracking-[0.3em] font-black uppercase mb-1">{album.category}</p>
+                      <h3 className="font-display text-3xl text-white tracking-tight">{album.title}</h3>
                     </div>
                   </div>
                 ))}
               </motion.div>
             ) : (
-              /* GALLERY VIEW (INSIDE THE ALBUM) */
-              <motion.div key="photos" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="columns-1 sm:columns-2 lg:columns-3 gap-8">
+              <motion.div key="photos" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="columns-1 sm:columns-2 lg:columns-3 gap-6">
                 {activeAlbum.photos.map((item: any, i: number) => (
-                  <div key={i} onMouseEnter={() => setHoveredIndex(i)} onMouseLeave={() => setHoveredIndex(null)}
-                    className="break-inside-avoid mb-8 relative group rounded-[2rem] overflow-hidden border border-white/10 bg-[#0a1120] shadow-2xl"
+                  <motion.div 
+                    key={i} 
+                    onClick={() => setSelectedMedia(item)}
+                    className="break-inside-avoid mb-6 relative group cursor-pointer rounded-3xl overflow-hidden border border-white/5 shadow-xl bg-white/5"
                   >
                     {item.type === "video" ? (
-                      <div className="aspect-video w-full relative">
-                        {hoveredIndex === i ? (
-                          <iframe src={item.url + "?autoplay=1&mute=1"} className="absolute inset-0 w-full h-full" allow="autoplay" />
-                        ) : (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-black to-[#0a1a3b]">
-                             <div className="w-16 h-16 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center mb-4"><span className="text-accent text-2xl">▶</span></div>
-                             <p className="text-[10px] text-white/30 tracking-widest font-black uppercase">Hover to Play</p>
-                          </div>
-                        )}
+                      <div className="aspect-video flex items-center justify-center bg-black/40">
+                         <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/40 flex items-center justify-center">
+                            <span className="text-accent text-xl ml-1">▶</span>
+                         </div>
                       </div>
                     ) : (
-                      <img src={item.url} className="w-full h-auto transition-transform duration-1000 group-hover:scale-110" />
+                      <img src={item.url} className="w-full h-auto transition-transform duration-700 group-hover:scale-105" />
                     )}
-                    {hoveredIndex !== i && (
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8 pointer-events-none">
-                        <p className="text-white font-script text-2xl drop-shadow-lg">{item.caption}</p>
-                      </div>
-                    )}
-                  </div>
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 pointer-events-none">
+                       <p className="text-white font-script text-lg opacity-80">{item.caption}</p>
+                    </div>
+                  </motion.div>
                 ))}
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
+
+      {/* FULL SCREEN LIGHTBOX (MODAL) */}
+      <AnimatePresence>
+        {selectedMedia && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-10"
+          >
+            {/* Toolbar */}
+            <div className="absolute top-6 right-6 flex gap-4 z-[110]">
+               <a 
+                href={selectedMedia.downloadUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-white/10 hover:bg-accent hover:text-black flex items-center justify-center transition-all text-white shadow-lg"
+                title="Download"
+               >
+                 <Download size={20} />
+               </a>
+               <button 
+                onClick={() => setSelectedMedia(null)}
+                className="w-12 h-12 rounded-full bg-white/10 hover:bg-red-500 flex items-center justify-center transition-all text-white shadow-lg"
+               >
+                 <X size={20} />
+               </button>
+            </div>
+
+            {/* Media Content */}
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }}
+              className="relative w-full max-w-5xl flex flex-col items-center"
+            >
+              {selectedMedia.type === "video" ? (
+                <iframe src={selectedMedia.url} className="w-full aspect-video rounded-2xl shadow-2xl" allow="autoplay" />
+              ) : (
+                <img src={selectedMedia.url} className="max-h-[75vh] w-auto rounded-2xl shadow-2xl border border-white/10" />
+              )}
+              <p className="mt-8 font-script text-accent text-3xl text-center">{selectedMedia.caption}</p>
+            </motion.div>
+
+            {/* Background Close Tap Area */}
+            <div className="absolute inset-0 -z-10" onClick={() => setSelectedMedia(null)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
