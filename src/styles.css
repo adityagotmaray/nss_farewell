@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-/* 
-  Removed "@import tw-animate-css" because it was causing the Vercel build crash. 
-  We will use standard Tailwind and custom CSS for animations instead.
-*/
-
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -106,28 +101,6 @@
     animation: drift 60s linear infinite;
   }
 
-  @keyframes drift {
-    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-    to   { background-position: 800px 800px, -800px 800px, 800px -800px, -800px -800px, 400px 400px; }
-  }
-
-  .polaroid {
-    background: oklch(0.96 0.02 85);
-    color: oklch(0.18 0.04 264);
-    padding: 12px 12px 36px;
-    box-shadow: var(--shadow-card);
-    transition: transform .4s ease;
-  }
-  .polaroid:hover { transform: translateY(-4px) scale(1.02); }
-
-  /* Custom Shine Animation for Gold Text */
-  @keyframes shine {
-    to { background-position: 200% center; }
-  }
-  .animate-shine {
-    animation: shine 5s linear infinite;
-
-  @layer utilities {
   .stars-layer {
     background-image: 
       radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
@@ -142,17 +115,31 @@
   .animate-twinkle {
     animation: twinkle 5s ease-in-out infinite;
   }
+
+  .animate-shine {
+    animation: shine 5s linear infinite;
+  }
+
+  .polaroid {
+    background: var(--nss-cream);
+    color: oklch(0.18 0.04 264);
+    padding: 12px 12px 36px;
+    box-shadow: var(--shadow-card);
+    transition: transform .4s ease;
+  }
+  .polaroid:hover { transform: translateY(-4px) rotate(0deg) scale(1.02); }
 }
 
-/* Fix: Keyframes must be at the root level */
+@keyframes drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: 800px 800px, -800px 800px, 800px -800px, -800px -800px, 400px 400px; }
+}
+
 @keyframes twinkle { 
   0%, 100% { opacity: 0.1; } 
   50% { opacity: 0.6; } 
 }
 
-  .animate-twinkle {
-    animation: twinkle 5s ease-in-out infinite;
-  }
-}
-  }
+@keyframes shine {
+  to { background-position: 200% center; }
 }
