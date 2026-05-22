@@ -19,26 +19,26 @@ export const Route = createFileRoute("/yearbook")({
 // BACKEND: ADD SENIORS HERE
 // ==========================================
 const SENIORS = [
-  { name: "Dr. Anand Tamrakar", major: "EDIT MAJOR", role: "PO", photo: "" },
-  { name: "Mr. Ayush Sahu", major: "EDIT MAJOR", role: "SEC", photo: "" },
+  { name: "Dr. Anand Tamrakar", major: "", role: "PO", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Mr. Ayush Sahu", major: "", role: "SEC", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
   { name: "Dhanendra kumar sahu", major: "CSE", role: "Dal Nayak", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
-  { name: "Chhanendra sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Julie prajapati", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Ashi sao", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Atul singh rajput", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Aastha singh", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Richa sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Devesh baghel", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Harsh sonwanshi", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "K Abhilash", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Milind sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Ayush shinde", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Anand sharma", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Bhupesh sahu", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Dharninee", major: "EDIT MAJOR", role: "VOL", photo: "" },
-  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "" }, // Blank 1
-  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "" }, // Blank 2
-  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "" }, // Blank 3
+  { name: "Chhanendra sahu", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1ilD9Vm9KhL4F_vk1cBRYh3P71dTRe6pT" },
+  { name: "Julie Prajapati", major: "CSE", role: "Dal Nayaika", photo: "https://lh3.googleusercontent.com/d/1A5JmZFG3uyp4TWnVByT8NagzeYnpwQAm" },
+  { name: "Ashi sao", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1_uD8fMK-0z6HWXV6x9-clZSGCHLJE7la" },
+  { name: "Atul singh rajput", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1LRSr2z2I0_7I8xXooGBUZ3Iri7RbdT9P" },
+  { name: "Aastha singh", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Richa sahu", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Devesh baghel", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Harsh sonwanshi", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1opm2UAF9rm-H0w2QrivM2cb3ly90OUSN" },
+  { name: "K Abhilash", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1ElFYj8J7Qpm4r1hCVf1jbsxzvF738Oxb" },
+  { name: "Milind sahu", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Ayush shinde", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Anand sharma", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Bhupesh sahu", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1VeoY_5z2vpnNnhJouwNlb78Vo9fWpb5v" },
+  { name: "Dharninee", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1iidPtcQZBX8UIOutjO2fQWY0X2IDTol8" },
+  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" }, // Blank 1
+  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" }, // Blank 2
+  { name: "Senior Name", major: "EDIT MAJOR", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" }, // Blank 3
 ];
 
 function YearbookPage() {
