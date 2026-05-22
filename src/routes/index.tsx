@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import nssLogo from "../assets/nss-logo.png";
+import eminenceLogo from "../assets/eminence-logo.png";
 import heroBg from "../assets/hero-bg.jpg";
 
 export const Route = createFileRoute("/")({
@@ -25,8 +25,6 @@ const BATCH_LABEL = "Batch 2022 — 2026";
 const NSS_MOTTO = "Not Me, But You";
 const NSS_MESSAGE = `The National Service Scheme aims at developing the personality of students through community service. To the seniors who lived this motto every single day — this one is for you.`;
 
-
-// NEW: Emotional phrases for the launcher
 const LOADING_PHRASES = [
   "Initializing NSS Memories...",
   "Recalling the camps and drives...",
@@ -37,29 +35,25 @@ const LOADING_PHRASES = [
 function Landing() {
   const navigate = useNavigate();
   const [revealed, setRevealed] = useState(false);
-  
-  // NEW STATES FOR LAUNCHER
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [phraseIndex, setPhraseIndex] = useState(0);
 
   useEffect(() => {
-    // 1. Progress Bar Logic
     const interval = setInterval(() => {
       setLoadingProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           setTimeout(() => {
-            setIsLoading(false); // Hide launcher
-            setTimeout(() => setRevealed(true), 100); // Reveal main page
+            setIsLoading(false);
+            setTimeout(() => setRevealed(true), 100);
           }, 500);
           return 100;
         }
         return prev + 1;
       });
-    }, 40); // Total loading time ~4 seconds
+    }, 40);
 
-    // 2. Phrase Rotation Logic
     const phraseInterval = setInterval(() => {
       setPhraseIndex((prev) => (prev + 1) % LOADING_PHRASES.length);
     }, 1200);
@@ -83,40 +77,25 @@ function Landing() {
       tabIndex={0}
       className="relative min-h-[100svh] w-full overflow-hidden cursor-pointer select-none bg-background text-foreground"
     >
-      
-      {/* ===== CHANGE 1: THE LAUNCHER OVERLAY ===== */}
       {isLoading && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0a0a0a] transition-opacity duration-1000">
           <div className="relative">
-             {/* Pulsing Logo */}
             <img 
-              src={nssLogo} 
+              src={eminenceLogo} 
               alt="Loading" 
-              className="h-24 w-24 mb-8 animate-pulse opacity-80"
-              style={{ filter: "drop-shadow(0 0 20px rgba(255,255,255,0.2))" }}
+              className="h-32 w-32 mb-8 animate-pulse"
+              style={{ filter: "drop-shadow(0 0 20px rgba(212,175,55,0.4))" }}
             />
           </div>
-          
-          {/* Progress Bar Container */}
-          <div className="w-64 h-[2px] bg-white/10 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-accent transition-all duration-300 ease-out"
-              style={{ width: `${loadingProgress}%` }}
-            />
+          <div className="w-64 h-[1px] bg-white/10 rounded-full overflow-hidden">
+            <div className="h-full bg-accent transition-all duration-300 ease-out" style={{ width: `${loadingProgress}%` }} />
           </div>
-
-          {/* Emotional Phrases */}
           <p className="mt-6 font-script text-accent text-xl animate-in fade-in slide-in-from-bottom-2 duration-700">
             {LOADING_PHRASES[phraseIndex]}
-          </p>
-          
-          <p className="mt-2 text-white/30 text-[10px] uppercase tracking-[0.4em]">
-            Preparing Farewell
           </p>
         </div>
       )}
 
-      {/* ===== REST OF YOUR ORIGINAL CODE ===== */}
       <img
         src={heroBg}
         alt=""
@@ -126,7 +105,6 @@ function Landing() {
       />
       <div className="absolute inset-0 starfield opacity-60" />
 
-      {/* Fog layers */}
       <div
         className={`pointer-events-none absolute inset-0 transition-opacity duration-[4000ms] ease-out ${
           revealed ? "opacity-0" : "opacity-100"
@@ -147,13 +125,12 @@ function Landing() {
             transitionDelay: "600ms",
             opacity: revealed ? 1 : 0,
             transform: revealed ? "translateY(0) scale(1)" : "translateY(20px) scale(0.92)",
-            filter: revealed ? "blur(0px)" : "blur(8px)",
           }}
         >
           <img
-            src={nssLogo}
-            alt="NSS Logo"
-            className="h-28 w-28 sm:h-36 sm:w-36 mx-auto drop-shadow-[0_0_40px_rgba(255,200,100,0.35)]"
+            src={eminenceLogo}
+            alt="Eminence Logo"
+            className="h-40 w-40 mx-auto drop-shadow-[0_0_50px_rgba(212,175,55,0.5)] mb-4"
           />
         </div>
 
@@ -192,21 +169,6 @@ function Landing() {
         >
           {NSS_MESSAGE}
         </p>
-
-        <div
-          className="mt-10 max-w-2xl transition-all ease-out"
-          style={{
-            transitionDuration: "2400ms",
-            transitionDelay: "4200ms",
-            opacity: revealed ? 1 : 0,
-            transform: revealed ? "translateY(0)" : "translateY(20px)",
-          }}
-        >
-          <p className="font-script text-accent/80 text-lg sm:text-xl mb-2">a message from your juniors</p>
-          <p className="font-display italic text-lg sm:text-2xl leading-relaxed whitespace-pre-line text-foreground/90">
-            
-          </p>
-        </div>
 
         <p
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-muted-foreground/70 transition-opacity"
