@@ -33,14 +33,14 @@ function MemoriesPage() {
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // 1. Initial Load: Fetch folder list (Session > Event)
+  // 1. Initial Load: Fetch folder list
   useEffect(() => {
     fetch(`${GOOGLE_SCRIPT_URL}?mode=list&id=${PARENT_DRIVE_FOLDER_ID}`)
       .then(res => res.json())
       .then(data => { setAlbums(data); setLoadingVault(false); });
   }, []);
 
-  // 2. Click Load: Fetch photos for a specific event
+  // 2. Click Load: Fetch photos for specific album
   useEffect(() => {
     if (activeAlbumId) {
       setLoadingPhotos(true);
@@ -51,12 +51,18 @@ function MemoriesPage() {
     }
   }, [activeAlbumId]);
 
+  // 3. Vanta Effect - MATCHED TO TRIBUTE PAGE
   useEffect(() => {
     if (!vantaEffect) {
       setVantaEffect(CLOUDS({
-        el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        backgroundColor: 0x010c1e, skyColor: 0x001f3f, cloudColor: 0x112240,
-        sunColor: 0xffd700, sunlightColor: 0x233554, speed: 1.2 
+        el: vantaRef.current,
+        THREE: THREE,
+        mouseControls: true,
+        touchControls: true,
+        backgroundColor: 0x02040a, // Matched
+        skyColor: 0x050a1a,       // Matched
+        cloudColor: 0x1e293b,     // Matched
+        speed: 1.2                // Matched
       }));
     }
     return () => { if (vantaEffect) vantaEffect.destroy(); };
@@ -67,8 +73,10 @@ function MemoriesPage() {
   return (
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
+
+      {/* BACKGROUND LAYERS - EXACT MATCH TO TRIBUTE */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-black/40 pointer-events-none z-[1]" />
+      <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
       <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none opacity-40" />
 
       <div className="relative z-10 pt-32 pb-20 px-6">
@@ -76,7 +84,7 @@ function MemoriesPage() {
           
           <div className="text-center mb-16">
             <Reveal>
-              <h1 className="font-display text-5xl sm:text-8xl text-white tracking-tighter mb-4">
+              <h1 className="font-display text-6xl sm:text-8xl text-white tracking-tighter mb-4">
                 {activeAlbum ? activeAlbum.title : "Memories Vault"}
               </h1>
               <p className="font-script text-accent text-2xl italic">
@@ -98,7 +106,6 @@ function MemoriesPage() {
                 Opening the Vault...
               </motion.div>
             ) : !activeAlbumId ? (
-              /* ALBUM LIST */
               <motion.div key="vault" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                 {albums.map((album) => (
                   <div key={album.id} onClick={() => setActiveAlbumId(album.id)}
@@ -106,14 +113,13 @@ function MemoriesPage() {
                   >
                     <img src={album.cover} className="absolute inset-0 h-full w-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-1000" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-10">
-                      <p className="text-accent text-[10px] tracking-[0.3em] font-bold mb-2 uppercase">{album.category}</p>
+                      <p className="text-accent text-[10px] tracking-[0.3em] font-bold mb-2 uppercase">COLLECTION</p>
                       <h3 className="font-display text-4xl text-white tracking-tight leading-none">{album.title}</h3>
                     </div>
                   </div>
                 ))}
               </motion.div>
             ) : (
-              /* PHOTO GRID */
               <motion.div key="photos" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
                 {loadingPhotos ? (
                    <p className="text-center text-accent/40 animate-bounce font-script text-3xl py-20">Gathering photos...</p>
@@ -153,7 +159,6 @@ function MemoriesPage() {
         </div>
       </div>
 
-      {/* LIGHTBOX */}
       <AnimatePresence>
         {selectedMedia && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
@@ -169,6 +174,20 @@ function MemoriesPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style>{`
+        .stars-layer {
+          background-image: 
+            radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+            radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0));
+          background-repeat: repeat;
+          background-size: 300px 300px;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.6; } }
+        .animate-twinkle { animation: twinkle 5s ease-in-out infinite; }
+      `}</style>
     </div>
   );
 }
