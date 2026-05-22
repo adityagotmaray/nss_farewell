@@ -207,8 +207,7 @@ function JourneyPage() {
       setVantaEffect(
         CLOUDS({
           el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-          backgroundColor: 0x010816, skyColor: 0x02132b, cloudColor: 0x112240,
-          sunColor: 0x010816, sunlightColor: 0x02132b, speed: 1.0
+        backgroundColor: 0x02040a, skyColor: 0x050a1a, cloudColor: 0x1e293b, speed: 1.2
         })
       );
     }
