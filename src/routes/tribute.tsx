@@ -34,7 +34,7 @@ const TIMELINE = [
         title: "7-Day Special Camp", 
         body: "Life in the village. Hard work by day, bonfires by night.",
         // 💡 TESTED LINK: Using the working ID we found earlier
-        photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" 
+        photo: "https://lh3.googleusercontent.com/d/1iRf3jAjJCmewZOub3h4o_yZdGCJilP8L" 
       },
       { title: "NSS Day Celebration", body: "A day of pride, cultural performances, and unit unity.", photo: "" }
     ]
