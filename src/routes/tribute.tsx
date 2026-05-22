@@ -27,7 +27,7 @@ const TIMELINE = [
   { 
     year: "2024", 
     events: [
-      { title: "7-Day Special Camp", body: "Life in the village. Hard work by day, bonfires by night.", photo: "" },
+      { title: "7-Day Special Camp", body: "Life in the village. Hard work by day, bonfires by night.", photo: "https://lh3.googleusercontent.com/d/1iRf3jAjJCmewZOub3h4o_yZdGCJilP8L" },
       { title: "NSS Day Celebration", body: "A day of pride, cultural performances, and unit unity.", photo: "" }
     ]
   },
