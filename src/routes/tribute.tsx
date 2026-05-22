@@ -23,16 +23,8 @@ const TIMELINE = [
   { 
     year: "2023", 
     events: [
-      { 
-        title: "Arrival in the scene", 
-        body: "Where it all began. Donning the NSS badge for the first time.",
-        photo: "" 
-      },
-      { 
-        title: "Being a part of a family", 
-        body: "Cleaning the campus streets and learning the dignity of labor.",
-        photo: "" 
-      }
+      { title: "Arrival in the scene", body: "Where it all began. Donning the NSS badge for the first time.", photo: "" },
+      { title: "Being a part of a family", body: "Cleaning the campus streets and learning the dignity of labor.", photo: "" }
     ]
   },
   { 
@@ -41,14 +33,10 @@ const TIMELINE = [
       { 
         title: "7-Day Special Camp", 
         body: "Life in the village. Hard work by day, bonfires by night.",
-        // 💡 UPDATED LINK: Using the 'uc' format which is more reliable for direct display
-        photo: "https://drive.google.com/uc?export=view&id=1iRf3jAjJCmewZ0ub3h4o_yZdGCJi1P8L" 
+        // 💡 TESTED LINK: Using the working ID we found earlier
+        photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" 
       },
-      { 
-        title: "NSS Day Celebration", 
-        body: "A day of pride, cultural performances, and unit unity.",
-        photo: "" 
-      }
+      { title: "NSS Day Celebration", body: "A day of pride, cultural performances, and unit unity.", photo: "" }
     ]
   },
   { 
@@ -75,12 +63,13 @@ function JourneyPage() {
       setVantaEffect(
         CLOUDS({
           el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-          // UPDATED: TRUE DARK BLUE SKY TINT (Removed reddish/brown tint)
-          backgroundColor: 0x01040a,
-          skyColor: 0x051622,
-          cloudColor: 0x1b2d3d,
-          sunColor: 0x0a192f, // Deep Blue Sun
-          sunlightColor: 0x14213d, // Cold Blue light
+          // 🚀 FORCED BLUE TINT (Removed all brown/orange codes)
+          backgroundColor: 0x020617, // Rich Navy Black
+          skyColor: 0x0f172a,       // Slate Blue Sky
+          cloudColor: 0x1e293b,     // Muted Blue Clouds
+          cloudShadowColor: 0x020617,
+          sunColor: 0x000000,       // Kills the orange glow
+          sunlightColor: 0x000000,  // Kills the brown tint
           speed: 1.2
         })
       );
@@ -93,11 +82,9 @@ function JourneyPage() {
   return (
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
-
-      {/* BACKGROUND LAYERS */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
-      <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none" />
+      <div className="fixed inset-0 bg-black/40 pointer-events-none z-[1]" />
+      <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none opacity-30" />
 
       <div className="relative z-10">
         
@@ -138,7 +125,7 @@ function JourneyPage() {
             </h1>
         </div>
 
-        {/* MULTI-EVENT TIMELINE SECTION */}
+        {/* TIMELINE SECTION */}
         <section className="relative pb-40 px-6 max-w-5xl mx-auto">
           <div className="absolute left-4 sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
           
@@ -162,19 +149,22 @@ function JourneyPage() {
                                 <div className="space-y-6">
                                     <div>
                                         <h3 className="font-display text-2xl sm:text-3xl text-white tracking-tight mb-3">{event.title}</h3>
-                                        <div className="p-6 rounded-3xl bg-black/40 border border-white/5 backdrop-blur-md shadow-2xl">
+                                        <div className="p-6 rounded-3xl bg-black/40 border border-white/5 backdrop-blur-md shadow-2xl transition-all hover:bg-black/60">
                                             <p className="text-white/70 leading-relaxed text-base italic">{event.body}</p>
                                         </div>
                                     </div>
 
-                                    {/* FIXED PHOTO RENDERER */}
+                                    {/* 🖼️ PHOTO DISPLAY FIX */}
                                     {event.photo && (
-                                        <div className="relative mt-8 rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5">
+                                        <div className="relative mt-8 rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 group">
                                             <img 
                                               src={event.photo} 
                                               alt={event.title} 
-                                              className="w-full h-auto min-h-[200px] object-cover block"
-                                              onLoad={(e) => (e.currentTarget.style.opacity = "1")}
+                                              className="w-full h-auto min-h-[150px] object-cover block transition-transform duration-700 group-hover:scale-105"
+                                              onError={(e) => {
+                                                console.error("Image failed to load. Check ID and permissions.");
+                                                e.currentTarget.style.display = 'none';
+                                              }}
                                             />
                                         </div>
                                     )}
