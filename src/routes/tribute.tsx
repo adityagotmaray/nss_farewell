@@ -63,14 +63,7 @@ function JourneyPage() {
       setVantaEffect(
         CLOUDS({
           el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-          // 🚀 FORCED BLUE TINT (Removed all brown/orange codes)
-          backgroundColor: 0x020617, // Rich Navy Black
-          skyColor: 0x0f172a,       // Slate Blue Sky
-          cloudColor: 0x1e293b,     // Muted Blue Clouds
-          cloudShadowColor: 0x020617,
-          sunColor: 0x000000,       // Kills the orange glow
-          sunlightColor: 0x000000,  // Kills the brown tint
-          speed: 1.2
+        backgroundColor: 0x02040a, skyColor: 0x050a1a, cloudColor: 0x1e293b, speed: 1.2 
         })
       );
     }
