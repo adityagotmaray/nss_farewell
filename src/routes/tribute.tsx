@@ -17,7 +17,7 @@ export const Route = createFileRoute("/tribute")({
 });
 
 // ==========================================================
-// BACKEND: THE COMPLETE SORTED TIMELINE (2024-2026)
+// BACKEND: YOUR DATA (UNCHANGED)
 // ==========================================================
 const TIMELINE = [
   {
@@ -207,7 +207,8 @@ function JourneyPage() {
       setVantaEffect(
         CLOUDS({
           el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        backgroundColor: 0x02040a, skyColor: 0x050a1a, cloudColor: 0x1e293b, speed: 1.2
+          backgroundColor: 0x010816, skyColor: 0x02132b, cloudColor: 0x112240,
+          sunColor: 0x010816, sunlightColor: 0x02132b, speed: 1.0
         })
       );
     }
@@ -219,8 +220,6 @@ function JourneyPage() {
   return (
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
-      
-      {/* BACKGROUND LAYERS */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
       <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
       <div className="fixed inset-0 z-[2] stars-layer animate-twinkle pointer-events-none opacity-30" />
@@ -230,78 +229,90 @@ function JourneyPage() {
         {/* HERO SECTION */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
           <Reveal>
-            <img src={eminenceLogo} alt="Logo" className="h-90 w-90 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
+            <img src={eminenceLogo} alt="Logo" className="h-32 w-32 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
             <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-accent/5 backdrop-blur-md">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-medium">
-                    National Service Scheme • Batch 2022—2026
-                </p>
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-medium">National Service Scheme • Batch 2022—2026</p>
             </div>
           </Reveal>
-
           <Reveal delay={200}>
             <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none text-white">
                <span className="text-shiny-gold italic">Eminence</span>
             </h1>
-            <p className="font-display italic text-4xl sm:text-5xl mt-4 text-white/90 tracking-widest">
-              Farewell - 2k26
-            </p>
+            <p className="font-display italic text-4xl sm:text-5xl mt-4 text-white/90 tracking-widest">Farewell - 2k26</p>
           </Reveal>
-
           <Reveal delay={400}>
-            <button onClick={scrollToStory} className="mt-12 px-10 py-4 bg-accent text-black font-black uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(212,175,55,0.4)]">
-              Relive Memories
-            </button>
+            <button onClick={scrollToStory} className="mt-12 px-10 py-4 bg-accent text-black font-black uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(212,175,55,0.4)]">Relive Memories</button>
           </Reveal>
         </section>
 
-        {/* JOURNEY TITLE */}
         <div ref={storyRef} className="pt-32 pb-24 px-6 text-center">
-            <p className="font-script text-accent text-4xl mb-4">the story of</p>
-            <h1 className="font-display text-6xl sm:text-9xl text-white">
-                <span className="italic bg-clip-text text-transparent bg-gradient-to-r from-accent via-white to-accent bg-[length:200%_auto] animate-shine">
-                    Their NSS Journey
-                </span>
-            </h1>
+            <p className="font-script text-accent text-4xl mb-4 text-shiny-gold">the story of</p>
+            <h1 className="font-display text-6xl sm:text-9xl text-white">Their NSS Journey</h1>
         </div>
 
-        {/* MULTI-EVENT TIMELINE SECTION */}
-        <section className="relative pb-40 px-6 max-w-5xl mx-auto">
-          <div className="absolute left-4 sm:left-1/2 sm:-translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
+        {/* ALTERNATING TIMELINE SECTION */}
+        <section className="relative pb-40 px-4 sm:px-6 max-w-7xl mx-auto">
+          {/* Main Vertical Line */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-accent/30 to-transparent hidden md:block" />
           
-          <div className="space-y-80">
+          <div className="space-y-40">
             {TIMELINE.map((yearGroup, yearIndex) => {
-              const isLeft = yearIndex % 2 === 0;
+              const isYearLeft = yearIndex % 2 === 0;
               return (
-                <div key={yearGroup.year} className={`relative pl-12 sm:pl-0 sm:grid sm:grid-cols-2 sm:gap-20 items-start ${isLeft ? "" : "sm:[&>*:first-child]:order-2"}`}>
+                <div key={yearGroup.year} className="relative">
                   
-                  <div className={`${isLeft ? "sm:text-right" : "sm:text-left"} sticky top-40`}>
-                    <Reveal>
-                        <span className="font-script text-accent text-7xl sm:text-9xl block drop-shadow-2xl">{yearGroup.year}</span>
-                    </Reveal>
-                  </div>
+                  {/* Big Year Marker */}
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    className="flex justify-center mb-20 relative z-20"
+                  >
+                    <div className="bg-[#0a1a3b] border-2 border-accent/40 px-8 py-3 rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+                      <span className="font-display text-accent text-5xl sm:text-7xl italic">{yearGroup.year}</span>
+                    </div>
+                  </motion.div>
 
-                  <div className="space-y-32 pt-10">
+                  <div className="space-y-32">
                     {yearGroup.events.map((event, eventIndex) => (
-                        <div key={eventIndex} className="relative">
-                            <div className="absolute left-[-42px] sm:left-[-51px] top-6 h-3 w-3 rounded-full bg-accent border border-accent shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
-                            <Reveal delay={eventIndex * 150}>
-                                <div className="space-y-6">
-                                    <h3 className="font-display text-2xl sm:text-3xl text-white tracking-tight mb-3">{event.title}</h3>
-                                    <div className="p-8 rounded-3xl bg-black/40 border border-white/5 backdrop-blur-md shadow-2xl transition-all hover:bg-black/60">
-                                        <p className="text-white/70 leading-relaxed text-base italic">{event.body}</p>
-                                    </div>
-
-                                    {event.photo && (
-                                        <div className="relative mt-8 rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 group">
-                                            <img src={event.photo} alt={event.title} className="w-full h-auto min-h-[150px] object-cover block transition-transform duration-700 group-hover:scale-105" />
-                                        </div>
-                                    )}
-                                </div>
-                            </Reveal>
+                      <motion.div 
+                        key={eventIndex}
+                        initial={{ opacity: 0, x: isYearLeft ? -100 : 100 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className={`flex flex-col ${isYearLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-center`}
+                      >
+                        {/* 1. TEXT SIDE */}
+                        <div className="w-full md:w-1/2 space-y-4">
+                          <div className={`p-8 rounded-[2rem] bg-black/40 border border-white/5 backdrop-blur-md shadow-2xl ${isYearLeft ? "md:text-right" : "md:text-left"}`}>
+                            <h3 className="font-display text-3xl sm:text-4xl text-white mb-4 leading-tight">{event.title}</h3>
+                            <p className="text-white/60 leading-relaxed text-lg italic">{event.body}</p>
+                          </div>
                         </div>
+
+                        {/* 2. CENTER NODE (Desktop Only) */}
+                        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-accent shadow-[0_0_15px_rgba(212,175,55,1)] z-30" />
+
+                        {/* 3. PHOTO SIDE (LARGER) */}
+                        <div className="w-full md:w-1/2">
+                          {event.photo ? (
+                            <div className="relative p-2 bg-white/5 border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden group">
+                                <img 
+                                  src={event.photo} 
+                                  alt={event.title} 
+                                  className="w-full aspect-[4/3] object-cover rounded-[2rem] transition-all duration-700 group-hover:scale-105" 
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                          ) : (
+                            <div className="aspect-[4/3] rounded-[2.5rem] bg-white/5 border border-dashed border-white/10 flex items-center justify-center">
+                               <p className="text-white/10 font-display italic">Memory Captured in our Hearts</p>
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
-
                 </div>
               );
             })}
