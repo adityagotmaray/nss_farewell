@@ -50,8 +50,20 @@ function YearbookPage() {
   useEffect(() => {
     if (!vantaEffect) {
       setVantaEffect(CLOUDS({
-        el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        backgroundColor: 0x02040a, skyColor: 0x050a1a, cloudColor: 0x1e293b, speed: 1.2  
+        el: vantaRef.current,
+  THREE: THREE,
+  mouseControls: true,
+  touchControls: true,
+  backgroundColor: 0x02040a, // Deep midnight black/blue
+  skyColor: 0x050a1a,        // Dark navy sky
+  cloudColor: 0x1e293b,      // Slate blue clouds
+  
+  // ADD THESE TO REMOVE THE ORANGE TINT:
+  sunColor: 0x050a1a,        // Set this to your skyColor to hide the "sun"
+  sunGlareColor: 0x0f172a,   // A slightly lighter navy for a subtle blue glow
+  sunlightColor: 0x08132b,   // Dark blue light instead of orange sunlight
+  
+  speed: 1.2  
       }));
     }
     return () => { if (vantaEffect) vantaEffect.destroy(); };
