@@ -229,7 +229,7 @@ function JourneyPage() {
         {/* HERO SECTION */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
           <Reveal>
-            <img src={eminenceLogo} alt="Logo" className="h-32 w-32 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
+            <img src={eminenceLogo} alt="Logo" className="h-90 w-90 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
             <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-accent/5 backdrop-blur-md">
                 <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-accent font-medium">National Service Scheme • Batch 2022—2026</p>
             </div>
