@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useMemo } from "react";
-import * as THREE from "three";
-// @ts-ignore
-import CLOUDS from "vanta/dist/vanta.clouds.min";
+
 import { motion, AnimatePresence } from "framer-motion";
 import TopNav from "../components/TopNav";
 import { Reveal, FONT_LINKS } from "../components/Tribute-UI";
@@ -30,25 +28,12 @@ const SENIORS = [
 ];
 
 function YearbookPage() {
-  const [vantaEffect, setVantaEffect] = useState<any>(null);
-  const vantaRef = useRef(null);
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
+  
 
   // Generate random rotations for the "scattered photo" look
   const cardRotations = useMemo(() => {
     return SENIORS.map(() => (Math.random() * 3 - 1.5).toFixed(2));
   }, []);
-
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(CLOUDS({
-        el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        backgroundColor: 0x02040a, skyColor: 0x050a1a, cloudColor: 0x1e293b, speed: 1.2 
-      }));
-    }
-    return () => { if (vantaEffect) vantaEffect.destroy(); };
-  }, [vantaEffect]);
 
   const filteredSeniors = SENIORS.filter(s => {
     const matchesSearch = s.name.toLowerCase().includes(search.toLowerCase());
@@ -61,7 +46,7 @@ function YearbookPage() {
   return (
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
-      <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
+      
       <div className="fixed inset-0 bg-black/40 pointer-events-none z-[1]" />
 
       <div className="relative z-10 pt-32 pb-20 px-6">
