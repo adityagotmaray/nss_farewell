@@ -209,6 +209,47 @@
   0%, 100% { opacity: 0.1; } 
   50% { opacity: 0.6; } 
 }
+/* Film Strip Aesthetic */
+.film-strip-container {
+  background: #050505;
+  padding: 25px 0;
+  position: relative;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.film-strip-container::before, 
+.film-strip-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-image: radial-gradient(circle, #1a1a1a 4px, transparent 4.5px);
+  background-size: 24px 10px;
+  z-index: 10;
+}
+
+.film-strip-container::before { top: 8px; }
+.film-strip-container::after { bottom: 8px; }
+
+.film-thumbnail {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 60px;
+  object-cover: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.film-thumbnail.active {
+  opacity: 1;
+  transform: scale(1.1);
+  border-color: #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
 
 @keyframes shine {
   to { background-position: 200% center; }
