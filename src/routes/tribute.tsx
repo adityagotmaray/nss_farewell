@@ -8,17 +8,7 @@ import TopNav from "../components/TopNav.tsx";
 import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx";
 import eminenceLogo from "../assets/eminence-logo.png";
 
-export const Route = createFileRoute("/tribute")({
-  head: () => ({
-    meta: [{ title: "NSS Farewell — Journey" }],
-    links: FONT_LINKS,
-  }),
-  component: JourneyPage,
-});
-
-// ==========================================================
-// BACKEND: DATA
-// ==========================================================
+// ... (Timeline data stays the same as your provided code)
 const TIMELINE = [
   {
     year: "2024",
@@ -182,6 +172,14 @@ const TIMELINE = [
   }
 ];
 
+export const Route = createFileRoute("/tribute")({
+  head: () => ({
+    meta: [{ title: "NSS Farewell — Journey" }],
+    links: FONT_LINKS,
+  }),
+  component: JourneyPage,
+});
+
 function JourneyPage() {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef(null);
@@ -192,7 +190,6 @@ function JourneyPage() {
       setVantaEffect(
         CLOUDS({
           el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-          /* UPDATED TO YOUR PREFERRED COLORS */
           backgroundColor: 0xf1eef7, 
           skyColor: 0x244681,   
           cloudColor: 0x143047,
@@ -213,40 +210,38 @@ function JourneyPage() {
     <div className="relative min-h-screen text-slate-900 overflow-x-hidden selection:bg-accent/20">
       <TopNav />
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      
-      {/* Light Overlay instead of black */}
-      <div className="fixed inset-0 bg-white/10 pointer-events-none z-[1]" />
+      <div className="fixed inset-0 bg-white/5 pointer-events-none z-[1]" />
 
       <div className="relative z-10">
         
         {/* HERO SECTION */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
           <Reveal>
-            <img src={eminenceLogo} alt="Logo" className="h-90 w-90 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
-            <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-white/40 backdrop-blur-md">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-[#060642] font-black">National Service Scheme • Batch 2022—2026</p>
+            <img src={eminenceLogo} alt="Logo" className="h-80 w-80 mx-auto mb-6 drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
+            <div className="mb-6 px-6 py-1.5 border border-white/30 rounded-full bg-white/20 backdrop-blur-md">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-white font-black">National Service Scheme • Batch 2022—2026</p>
             </div>
           </Reveal>
           <Reveal delay={200}>
             <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none text-[#060642]">
                <span className="italic">Eminence</span>
             </h1>
-            <p className="font-display italic text-4xl sm:text-5xl mt-4 text-[#244681] tracking-widest">Farewell - 2k26</p>
+            {/* CHANGED TO WHITE to match your request */}
+            <p className="font-display font-bold text-4xl sm:text-5xl mt-4 text-white tracking-[0.2em] drop-shadow-md">Farewell - 2k26</p>
           </Reveal>
           <Reveal delay={400}>
-            <button onClick={scrollToStory} className="mt-12 px-10 py-4 bg-[#060642] text-white font-black uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(6,6,66,0.2)]">Relive Memories</button>
+            <button onClick={scrollToStory} className="mt-12 px-12 py-5 bg-[#060642] text-white font-black uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-white/20">Relive Memories</button>
           </Reveal>
         </section>
 
         <div ref={storyRef} className="pt-32 pb-24 px-6 text-center">
-            <p className="font-script text-[#c81e1e] text-4xl mb-4 italic">the story of</p>
+            <p className="font-script text-[#c81e1e] text-5xl mb-4 italic">the story of</p>
             <h1 className="font-display text-6xl sm:text-9xl text-[#060642] tracking-tighter">Their NSS Journey</h1>
         </div>
 
-        {/* ALTERNATING TIMELINE SECTION */}
+        {/* TIMELINE SECTION */}
         <section className="relative pb-40 px-4 sm:px-6 max-w-7xl mx-auto">
-          {/* Main Vertical Line (Changed to Navy) */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[#244681]/30 to-transparent hidden md:block" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#060642]/20 to-transparent hidden md:block" />
           
           <div className="space-y-40">
             {TIMELINE.map((yearGroup, yearIndex) => {
@@ -254,14 +249,14 @@ function JourneyPage() {
               return (
                 <div key={yearGroup.year} className="relative">
                   
-                  {/* Big Year Marker */}
+                  {/* Big Year Marker - ALIGNED TO SIDE AND NEW FONT */}
                   <motion.div 
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    className="flex justify-center mb-20 relative z-20"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className={`flex ${isYearLeft ? "justify-start" : "justify-end"} mb-12 relative z-20`}
                   >
-                    <div className="bg-white/80 border-2 border-[#244681]/40 px-8 py-3 rounded-2xl shadow-xl backdrop-blur-md">
-                      <span className="font-display text-[#060642] text-5xl sm:text-7xl italic">{yearGroup.year}</span>
+                    <div className="bg-[#060642] px-10 py-3 rounded-2xl shadow-2xl border border-white/20">
+                      <span className="font-sans font-black text-white text-5xl sm:text-7xl tracking-tighter">{yearGroup.year}</span>
                     </div>
                   </motion.div>
 
@@ -269,38 +264,32 @@ function JourneyPage() {
                     {yearGroup.events.map((event, eventIndex) => (
                       <motion.div 
                         key={eventIndex}
-                        initial={{ opacity: 0, x: isYearLeft ? -100 : 100 }}
+                        initial={{ opacity: 0, x: isYearLeft ? -50 : 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className={`flex flex-col ${isYearLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-center`}
+                        viewport={{ once: true }}
+                        className={`flex flex-col ${isYearLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-12 items-center`}
                       >
-                        {/* 1. TEXT SIDE */}
-                        <div className="w-full md:w-1/2 space-y-4">
-                          <div className={`p-8 rounded-[2rem] bg-white/40 border border-white/60 backdrop-blur-md shadow-xl ${isYearLeft ? "md:text-right" : "md:text-left"}`}>
-                            <h3 className="font-display text-3xl sm:text-4xl text-[#060642] mb-4 leading-tight">{event.title}</h3>
-                            <p className="text-[#060642]/60 leading-relaxed text-lg italic">{event.body}</p>
+                        {/* TEXT SIDE */}
+                        <div className="w-full md:w-1/2">
+                          <div className={`p-10 rounded-[2.5rem] bg-white/50 border border-white/60 backdrop-blur-lg shadow-xl ${isYearLeft ? "md:text-right" : "md:text-left"}`}>
+                            <h3 className="font-display text-3xl sm:text-4xl text-[#060642] mb-4 font-bold">{event.title}</h3>
+                            {/* Increased text opacity for visibility */}
+                            <p className="text-[#060642] font-medium leading-relaxed text-lg italic opacity-80">{event.body}</p>
                           </div>
                         </div>
 
-                        {/* 2. CENTER NODE (Desktop Only) */}
-                        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#060642] shadow-[0_0_15px_rgba(6,6,66,0.3)] z-30" />
+                        {/* CENTER NODE */}
+                        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-[#060642] border-4 border-white shadow-lg z-30" />
 
-                        {/* 3. PHOTO SIDE */}
+                        {/* PHOTO SIDE */}
                         <div className="w-full md:w-1/2">
-                          {event.photo ? (
-                            <div className="relative p-2 bg-white/60 border border-white/60 rounded-[2.5rem] shadow-2xl overflow-hidden group">
-                                <img 
-                                  src={event.photo} 
-                                  alt={event.title} 
-                                  className="w-full aspect-[4/3] object-cover rounded-[2rem] transition-all duration-700 group-hover:scale-105" 
-                                />
-                            </div>
-                          ) : (
-                            <div className="aspect-[4/3] rounded-[2.5rem] bg-white/20 border border-dashed border-[#060642]/10 flex items-center justify-center">
-                               <p className="text-[#060642]/20 font-display italic">Memory Captured in our Hearts</p>
-                            </div>
-                          )}
+                          <div className="relative p-2.5 bg-white/70 border border-white/40 rounded-[2.5rem] shadow-2xl group overflow-hidden">
+                              <img 
+                                src={event.photo} 
+                                alt={event.title} 
+                                className="w-full aspect-[4/3] object-cover rounded-[2rem] transition-transform duration-700 group-hover:scale-105" 
+                              />
+                          </div>
                         </div>
                       </motion.div>
                     ))}
@@ -311,9 +300,10 @@ function JourneyPage() {
           </div>
         </section>
 
-        <footer className="py-20 text-center border-t border-black/5 bg-white/10 backdrop-blur-sm">
-            <p className="font-script text-[#c81e1e] text-3xl mb-4 italic">Not Me, But You</p>
-            <p className="text-[10px] uppercase tracking-[0.5em] text-[#060642]/30 italic">End of an Era · 2022 — 2026</p>
+        <footer className="py-24 text-center border-t border-white/10 bg-white/5 backdrop-blur-md">
+            <p className="font-script text-[#c81e1e] text-5xl mb-6 italic">Not Me, But You</p>
+            {/* CHANGED TO WHITE/VISIBLE COLOR */}
+            <p className="text-xs uppercase tracking-[0.6em] text-white font-bold opacity-60">End of an Era · 2022 — 2026</p>
         </footer>
       </div>
     </div>
