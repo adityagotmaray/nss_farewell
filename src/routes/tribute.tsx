@@ -11,6 +11,26 @@ import eminenceLogo from "../assets/eminence-logo.png";
 // ... (Timeline data stays the same as your provided code)
 const TIMELINE = [
   {
+    year: "2022",
+    events: [
+      {
+        title: "The Beginning: Planting the Seeds.", 
+        body: "August 2022 marked the start of a silent transformation. We entered the unit as strangers from different walks of life, joined only by a badge and a motto we were just beginning to understand. These were the days of first orientations, shy introductions, and the quiet realization that we were now part of a legacy of service.",
+        photo: "https://lh3.googleusercontent.com/d/1okcn2Pl_vum45Zu3chqq5K2P59X6ox42"
+      }
+    ]
+  },
+  {
+    year: "2023",
+    events: [
+      { 
+        title: "Finding our Rhythm.", 
+        body: "By 2023, the uniform became our second skin. The initial hesitation faded into a steady pulse of dedication. We spent this year learning the true meaning of 'shramadaan' and finding our collective voice. It was a period of silent growth, where the bonds of friendship were forged in the heat of service and the joy of working together.",
+        photo: "https://lh3.googleusercontent.com/d/1okcn2Pl_vum45Zu3chqq5K2P59X6ox42" 
+      }
+    ]
+  },
+  {
     year: "2024",
     events: [
       { 
@@ -66,6 +86,7 @@ const TIMELINE = [
     ]
   },
   {
+    
     year: "2025",
     events: [
       { 
