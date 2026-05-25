@@ -26,7 +26,7 @@ const TIMELINE = [
       { 
         title: "Finding our Rhythm.", 
         body: "By 2023, the uniform became our second skin. The initial hesitation faded into a steady pulse of dedication. We spent this year learning the true meaning of 'shramadaan' and finding our collective voice. It was a period of silent growth, where the bonds of friendship were forged in the heat of service and the joy of working together.",
-        photo: "" 
+        photo: "https://lh3.googleusercontent.com/d/1ygVENTXwxhlfI_teD594yxcvozCrSSlH" 
       }
     ]
   },
