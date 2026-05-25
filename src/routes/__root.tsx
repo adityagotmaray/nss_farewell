@@ -6,7 +6,17 @@ import { Music, Music2 } from "lucide-react";
 export const Route = createRootRoute({
   component: RootLayout,
 });
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
 
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AnimatePresence mode="wait">
+        <Outlet />
+      </AnimatePresence>
+    </QueryClientProvider>
+  );
+}
 function RootLayout() {
   const location = useLocation();
   
