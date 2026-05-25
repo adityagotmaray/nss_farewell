@@ -1,23 +1,32 @@
-import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  Outlet,
+  Link,
+  createRootRouteWithContext,
+  useRouter,
+  HeadContent,
+  Scripts,
+  useLocation
+} from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { Music, Music2 } from "lucide-react";
+import appCss from "../styles.css?url";
 
-export const Route = createRootRoute({
-  component: RootLayout,
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Eminence 2k26 — NSS Farewell" },
+    ],
+    links: [{ rel: "stylesheet", href: appCss }],
+  }),
+  component: RootComponent,
 });
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AnimatePresence mode="wait">
-        <Outlet />
-      </AnimatePresence>
-    </QueryClientProvider>
-  );
-}
-function RootLayout() {
   const location = useLocation();
   
   // 14. Cursor Glow Logic
@@ -38,48 +47,50 @@ function RootLayout() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   return (
-    <div className="bg-aurora-container min-h-screen relative text-foreground">
-      
-      {/* 14. CURSOR GLOW */}
-      <motion.div className="cursor-glow hidden md:block" style={{ left: cursorX, top: cursorY }} />
+    <QueryClientProvider client={queryClient}>
+      <div className="bg-aurora-container min-h-screen relative text-foreground overflow-x-hidden">
+        
+        {/* 14. CURSOR GLOW */}
+        <motion.div className="cursor-glow hidden md:block" style={{ left: cursorX, top: cursorY }} />
 
-      {/* 12. GLOBAL BACKGROUND (Aurora + Stars) */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="aurora-blob w-[600px] h-[600px] bg-[#1e1b4b] top-[-10%] left-[-10%]" />
-        <div className="aurora-blob w-[500px] h-[500px] bg-[#0f4c4c] bottom-[10%] right-[-5%] animation-delay-2000" />
-        <div className="aurora-blob w-[400px] h-[400px] bg-[#1e3a5f] top-[30%] left-[20%] animation-delay-4000" />
-        <div className="absolute inset-0 star-field-static opacity-30" />
-      </div>
+        {/* 12. GLOBAL BACKGROUND (Aurora + Stars) */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="aurora-blob w-[600px] h-[600px] bg-[#1e1b4b] top-[-10%] left-[-10%]" />
+          <div className="aurora-blob w-[500px] h-[500px] bg-[#0f4c4c] bottom-[10%] right-[-5%]" />
+          <div className="aurora-blob w-[400px] h-[400px] bg-[#1e3a5f] top-[30%] left-[20%]" />
+          <div className="absolute inset-0 starfield opacity-30" />
+        </div>
 
-      {/* 13. SMOOTH PAGE TRANSITIONS */}
-      <main className="relative z-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
+        {/* 13. SMOOTH PAGE TRANSITIONS */}
+        <main className="relative z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
+        </main>
+
+        {/* 15. MUSIC TOGGLE BUTTON */}
+        <div className="fixed bottom-8 right-8 z-50">
+          <button
+            onClick={() => {
+              setPlaying(!playing);
+              playing ? audioRef.current?.pause() : audioRef.current?.play();
+            }}
+            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-2xl border border-white/10 ${playing ? 'bg-accent text-black animate-pulse' : 'bg-black/40 text-white'}`}
           >
-            <Outlet />
-          </motion.div>
-        </AnimatePresence>
-      </main>
-
-      {/* 15. MUSIC TOGGLE BUTTON */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <button
-          onClick={() => {
-            setPlaying(!playing);
-            playing ? audioRef.current?.pause() : audioRef.current?.play();
-          }}
-          className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-2xl border border-white/10 ${playing ? 'bg-accent text-black animate-pulse shadow-accent/40' : 'bg-black/40 text-white hover:bg-white/10'}`}
-        >
-          {playing ? <Music2 className="animate-spin-slow" /> : <Music />}
-        </button>
-        {/* Placeholder: Put a piano mp3 in public/audio/ambient.mp3 */}
-        <audio ref={audioRef} src="/audio/ambient.mp3" loop />
+            {playing ? <Music2 className="animate-spin-slow" /> : <Music />}
+          </button>
+          <audio ref={audioRef} src="/audio/ambient.mp3" loop />
+        </div>
       </div>
-    </div>
+      <Scripts />
+    </QueryClientProvider>
   );
 }
