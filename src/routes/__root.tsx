@@ -1,82 +1,119 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, createRootRouteWithContext, Scripts, useLocation } from "@tanstack/react-router";
-import { useState, useEffect, useRef, useMemo } from "react";
-import { motion, AnimatePresence, useSpring } from "framer-motion";
-import { Music, Music2 } from "lucide-react";
+import {
+  Outlet,
+  Link,
+  createRootRouteWithContext,
+  useRouter,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
+
 import appCss from "../styles.css?url";
+
+function NotFoundComponent() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <div className="mt-6">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            Go home
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  console.error(error);
+  const router = useRouter();
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          This page didn't load
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Something went wrong on our end. You can try refreshing or head back home.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            Try again
+          </button>
+          <a
+            href="/"
+            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            Go home
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-    meta: [{ charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }],
-    links: [{ rel: "stylesheet", href: appCss }],
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Lovable App" },
+      { name: "description", content: "Lovable Generated Project" },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "Lovable App" },
+      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:site", content: "@Lovable" },
+    ],
+    links: [
+      {
+        rel: "stylesheet",
+        href: appCss,
+      },
+    ],
   }),
+  shellComponent: RootShell,
   component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent,
 });
+
+function RootShell({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const location = useLocation();
-  const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Cursor Logic
-  const cursorX = useSpring(0, { stiffness: 100, damping: 25 });
-  const cursorY = useSpring(0, { stiffness: 100, damping: 25 });
-
-  useEffect(() => {
-    const move = (e: MouseEvent) => { cursorX.set(e.clientX); cursorY.set(e.clientY); };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
-  // Generate 40 random embers for the background
-  const embers = useMemo(() => Array.from({ length: 40 }).map((_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    delay: `${Math.random() * 15}s`,
-    duration: `${Math.random() * 10 + 15}s`,
-    size: `${Math.random() * 3 + 1}px`
-  })), []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="nebula-container min-h-screen relative text-foreground">
-        
-        {/* BACKGROUND ENGINE */}
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="nebula-cloud bg-[#1e1b4b] top-[-20%] left-[-10%]" />
-          <div className="nebula-cloud bg-[#0f172a] bottom-[-20%] right-[-10%]" style={{ animationDelay: '-15s' }} />
-          <div className="starfield-cinematic" />
-          
-          {/* RISING EMBERS */}
-          {embers.map(e => (
-            <div key={e.id} className="ember" style={{ 
-              left: e.left, '--delay': e.delay, '--duration': e.duration, width: e.size, height: e.size 
-            } as any} />
-          ))}
-          
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-        </div>
-
-        <motion.div className="cursor-glow hidden md:block" style={{ left: cursorX, top: cursorY }} />
-
-        <main className="relative z-10">
-          <AnimatePresence mode="wait">
-            <motion.div key={location.pathname} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
-        </main>
-
-        <div className="fixed bottom-8 right-8 z-50">
-          <button onClick={() => { setPlaying(!playing); playing ? audioRef.current?.pause() : audioRef.current?.play(); }}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all border border-white/10 ${playing ? 'bg-accent text-black music-playing' : 'bg-black/40 text-white'}`}>
-            {playing ? <Music2 /> : <Music />}
-          </button>
-          <audio ref={audioRef} src="/audio/ambient.mp3" loop />
-        </div>
-      </div>
-      <Scripts />
+      <Outlet />
     </QueryClientProvider>
   );
 }
