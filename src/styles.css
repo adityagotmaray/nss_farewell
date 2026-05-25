@@ -134,6 +134,46 @@
   from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
   to   { background-position: 800px 800px, -800px 800px, 800px -800px, -800px -800px, 400px 400px; }
 }
+@keyframes breathing-glow {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+  50% { filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.6)); }
+}
+
+.animate-breathing {
+  animation: breathing-glow 3s ease-in-out infinite;
+}
+@keyframes particle-drift {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.6; }
+  100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+}
+
+
+.dust-particle {
+  position: absolute;
+  background-color: #d4af37;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-drift var(--duration) linear infinite;
+  animation-delay: var(--delay);
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+}
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: #d4af37;
+  margin-left: 4px;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
 
 @keyframes twinkle { 
   0%, 100% { opacity: 0.1; } 
