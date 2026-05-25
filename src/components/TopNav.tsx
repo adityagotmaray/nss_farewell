@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import nssLogo from "../assets/nss-logo.png";
 
 const LINKS = [
@@ -13,24 +13,24 @@ export default function TopNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    // Changed bg-background/70 to bg-white/30 and text to navy
     <header className="fixed top-0 left-0 right-0 z-[60] bg-transparent">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-8">
-        <Link to="/" className="flex items-center gap-3 group">
-          <img src={nssLogo} alt="NSS" className="h-10 w-10" />
+      {/* Changed max-w-7xl to 95% and py-8 to py-4 to push items to the edges and up */}
+      <div className="max-w-[95%] mx-auto flex items-center justify-between px-4 py-4">
+        <Link to="/" className="flex items-center gap-3 group transition-transform hover:scale-105">
+          <img src={nssLogo} alt="NSS" className="h-12 w-12" />
           <div className="leading-tight">
-            <p className="font-display text-sm sm:text-base text-[#060642] font-bold">NSS Farewell</p>
-            <p className="font-script text-[#ffffff] text-xs sm:text-sm">Batch 2022 — 2026</p>
+            <p className="font-display text-base sm:text-lg text-[#060642] font-black uppercase tracking-tight">NSS Farewell</p>
+            <p className="font-sans text-white text-xs font-bold opacity-90">Batch 2022 — 2026</p>
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden md:flex items-center gap-4">
           {LINKS.map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              activeProps={{ className: "text-[#c81e1e] bg-white/50 shadow-sm" }}
-              className="px-5 py-2 rounded-full text-xs uppercase tracking-widest font-black text-[#060642] hover:bg-white/40 transition-all"
+              activeProps={{ className: "text-[#c81e1e] bg-white/60 shadow-md scale-110" }}
+              className="px-6 py-2.5 rounded-full text-sm uppercase tracking-widest font-black text-[#060642] hover:bg-white/40 transition-all hover:scale-110"
             >
               {l.label}
             </Link>
@@ -47,9 +47,6 @@ export default function TopNav() {
           </svg>
         </button>
       </div>
-
-      {/* Mobile menu */}
-      
     </header>
   );
 }
