@@ -173,7 +173,26 @@
 @keyframes blink {
   50% { opacity: 0; }
 }
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
 
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Authentic Paper Texture */
+.paper-texture {
+  background-color: #f5f0e8;
+  background-image: url("https://www.transparenttextures.com/patterns/paper.png");
+}
+
+/* NSS Theme specific addition */
+.text-handwritten {
+  font-family: "Caveat", cursive;
+  color: #1a1a1a;
+}
 
 @keyframes twinkle { 
   0%, 100% { opacity: 0.1; } 
