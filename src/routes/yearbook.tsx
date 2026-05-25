@@ -16,9 +16,31 @@ export const Route = createFileRoute("/yearbook")({
 });
 
 const SENIORS = [
-  { name: "Dr. Anand Tamrakar", major: "Professor", role: "PO", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
-  { name: "Mr. Ayush Sahu", major: "Coordinator", role: "SEC", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
-  { name: "Dhanendra kumar sahu", major: "CSE", role: "Dal Nayak", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Dr. Anand Tamrakar", major: "FACULTY", role: "PO", photo: "https://lh3.googleusercontent.com/d/1MJd483hk7Y_z4ywtI0ZoIE8otAP9LuBQ"},
+  { name: "Mr. Ayush Sahu", major: "FACULTY", role: "SEC", photo: "https://lh3.googleusercontent.com/d/1y_ZAuyGc1spuiH2omFdVDLsj0pLw0DQP"},
+  { name: "Dhanendra Kumar Sahu", major: "CSE", role: "Dal Nayak", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv"},
+  { name: "Julie Prajapati", major: "CSE", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1A5JmZFG3uyp4TWnVByT8NagzeYnpwQAm"},
+  { name: "Chhanendra Sahu", major: "CSE", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1ilD9Vm9KhL4F_vk1cBRYh3P71dTRe6pT"},
+  { name: "Ashi Sao", major: "CSE", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1_uD8fMK-0z6HWXV6x9-clZSGCHLJE7la"},
+  { name: "Atul Singh rajput", major: "CSE", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1LRSr2z2I0_7I8xXooGBUZ3Iri7RbdT9P"},
+  { name: "Aastha Singh", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv"},
+  { name: "Richa Sahu", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv"},
+  { name: "Devesh Sahu", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv"},
+  { name: "Harsh Sonwanshi", major: "CSE", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1opm2UAF9rm-H0w2QrivM2cb3ly90OUSN"},
+  { name: "K Abhilash", major: "IT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1ElFYj8J7Qpm4r1hCVf1jbsxzvF738Oxb"},
+  { name: "Milind sahu", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1V6j3W7wuH9vgB3jmy1i9HCpu_AJH7DLd"},
+  { name: "Ayush shinde", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1r6s_rWkHfskw3VNj5Ok4ZAuflzaKFWTo"},
+  { name: "Anand sharma", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1q4qzj8vCB1r_YE98ntkX_3Bl0AC3XS6Z"},
+  { name: "Bhupesh Dewangan", major: "CSE", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1VeoY_5z2vpnNnhJouwNlb78Vo9fWpb5v"},
+  { name: "Dharninee Yadu", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1iidPtcQZBX8UIOutjO2fQWY0X2IDTol8"},
+  { name: "Krrish Singh", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1RWBsd2k28Vux-DEaCZHrHebiVlbmUEGB"}, // Blank 1
+  { name: "Tejaswani Gupta", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1Ax9NoztwBXDy2UyZErExLztC_zDkENB9"}, // Blank 2
+  { name: "Anjali Sahu", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1TlSHPH6OxjvCQXQdhlSRazse5NamIt1f"},
+  { name: "Aditi Bandawar", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1kI6NbR7t_JkS_RoL-9hkvA0U4FaCMXH2"},
+  { name: "Dhanraj Singh", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1aj23PN53f8dB1sj2cDWkdud5zr7CfDBj"},// Blank 3
+  { name: "Aasma Ali", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1wbR1k2noja71LwwkMzP46Y8SJ0wL9cyL"},
+  { name: "Baldev Das Vaishnav", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1iuwkjyGIiSZ3Hn2OrgOLS7RLBYv83PEZ"},
+  { name: "Kanchan Dewangan", major: "EDIT", role: "VOL", photo: "https://lh3.googleusercontent.com/d/1J8u2KKCl0RnkBocrdoiJPzjZr33xYUov"},
 ];
 
 function YearbookPage() {
