@@ -85,8 +85,15 @@ function MemoriesPage() {
     if (!vantaEffect) {
       setVantaEffect(CLOUDS({
         el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        backgroundColor: 0xf1eef7, skyColor: 0x244681, cloudColor: 0x143047,
-        cloudShadowColor: 0xf5f9fc, sunColor: 0xfff9f2, speed: 1.0 
+          /* UPDATED TO YOUR PREFERRED COLORS */
+          backgroundColor: 0xf1eef7, 
+          skyColor: 0x244681,   
+          cloudColor: 0x143047,
+          cloudShadowColor: 0xf5f9fc,
+          sunColor: 0xfff9f2,
+          sunGlareColor: 0xfff9f7,
+          sunlightColor: 0xf7f4f0,
+          speed: 1.0 
       }));
     }
     return () => { if (vantaEffect) vantaEffect.destroy(); };
