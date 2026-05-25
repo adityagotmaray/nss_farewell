@@ -133,7 +133,7 @@ function MemoriesPage() {
                 <div className="flex flex-col md:flex-row items-end justify-between mb-10 gap-6">
                   <div>
                     <p className="text-[#c81e1e] font-black uppercase tracking-[0.4em] text-[10px] mb-2">Moments of Service</p>
-                    <h2 className="font-display text-5xl sm:text-7xl text-[#060642] tracking-tighter">Daily Highlights</h2>
+                    <h2 className="font-display text-5xl sm:text-7xl text-[#060642] tracking-tighter">Highlights</h2>
                   </div>
                 </div>
               </Reveal>
