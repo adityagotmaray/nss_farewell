@@ -215,7 +215,7 @@ function MemoriesPage() {
             )}
 
             {activeAlbumId && (
-              <button onClick={() => setActiveAlbumId(null)} className="mb-12 flex items-center gap-2 mx-auto text-[#244681] hover:text-[#060642] transition-all uppercase tracking-widest text-[10px] font-black"><ChevronLeft size={14} /> Return to Vault</button>
+              <button onClick={() => setActiveAlbumId(null)} className="mb-12 flex items-center gap-2 mx-auto text-[#ffffff] hover:text-[#ffffff] transition-all uppercase tracking-widest text-[10px] font-black"><ChevronLeft size={14} /> Return to Vault</button>
             )}
 
             <AnimatePresence mode="wait">
