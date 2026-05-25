@@ -132,12 +132,12 @@ const TIMELINE = [
       { 
         title: "Flash Mob HIV/AIDS Awareness", 
         body: "Breaking the silence. Using the power of street performance to educate and remove the stigma around AIDS.",
-        photo: "https://lh3.googleusercontent.com/d/1Ly3VbtgiuOfJayXBJ5DEx37BkWp2UP_9" 
+        photo: "https://lh3.googleusercontent.com/d/1-v_JuARx1ycPEg_Y4q9-LVNeJ3V5IgFU" 
       },
       { 
         title: "Raktdaan Amrit Mahotsav 2.0", 
         body: "Another massive milestone in saving lives. A day of sacrifice and immense pride for our unit.",
-        photo: "https://lh3.googleusercontent.com/d/1lKU4LKWvcrwZcbmpi_U5O8q1EXhrM565" 
+        photo: "https://lh3.googleusercontent.com/d/1HoTgmf4ji_4ZQ4A8r9aNIstg56_ZfuOr" 
       },
       { 
         title: "Oath Taking Seva Pakhwada", 
@@ -147,7 +147,7 @@ const TIMELINE = [
       { 
         title: "NSS Foundation Day", 
         body: "Celebrating another year of the unit's existence. A day of joy, awards, and looking back at our achievements.",
-        photo: "https://lh3.googleusercontent.com/d/1FaXkcoUHUHX35Poi2zrjuOi9I86Bfbsm" 
+        photo: "https://lh3.googleusercontent.com/d/1CjxZMinoShYpWdskLLwntAb80V0FvnEH" 
       },
       { 
         title: "Diwali Awareness And Fundraising", 
@@ -157,12 +157,17 @@ const TIMELINE = [
       { 
         title: "One Day Camp", 
         body: "Intense, short-term service. A focused drive to complete a specific community goal within 24 hours.",
-        photo: "https://lh3.googleusercontent.com/d/1iVFm_wYfEPtF7Cu_jXae9np6-VJN9-_i" 
+        photo: "https://lh3.googleusercontent.com/d/1QHXS4BhyEbL_xw3kr0K36ABHttIgpg-I" 
       },
       { 
         title: "1st Dec World AIDS Day", 
         body: "A global stand for health. Joining the world in spreading awareness and honoring those lost to the fight.",
         photo: "https://lh3.googleusercontent.com/d/10MhtFSiXZLN4B9XSvwtGWPKcKkpnSFUe" 
+      },
+      { 
+        title: "Samarpanam", 
+        body: "A full-fledged Health checkup camp",
+        photo: "https://lh3.googleusercontent.com/d/1G2w3wKdmw63WhsPIJoGXLE_NnPBaVbn2" 
       }
     ]
   },
@@ -177,7 +182,7 @@ const TIMELINE = [
       { 
         title: "7-Day Special Unit Camp", 
         body: "The final camp for our seniors. A bittersweet week of memories, shramadaan, and saying goodbye to the fields.",
-        photo: "https://lh3.googleusercontent.com/d/16--9UmAdhJF7SA7uNTCZDJ9_wh5Iha94" 
+        photo: "https://lh3.googleusercontent.com/d/1_asMwcxY28dYWJVbZM3znTK41kctIXvO" 
       }
     ]
   }
