@@ -3,177 +3,334 @@ import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 // @ts-ignore
 import CLOUDS from "vanta/dist/vanta.clouds.min";
-import { motion, AnimatePresence } from "framer-motion";
-import { Download, X, ChevronLeft } from "lucide-react";
+import { motion } from "framer-motion";
 import TopNav from "../components/TopNav.tsx";
 import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx";
+import eminenceLogo from "../assets/eminence-logo.png";
 
-export const Route = createFileRoute("/memories")({
+export const Route = createFileRoute("/tribute")({
   head: () => ({
-    meta: [{ title: "Memories Vault — NSS Farewell" }],
+    meta: [{ title: "NSS Farewell — Journey" }],
     links: FONT_LINKS,
   }),
-  component: MemoriesPage,
+  component: JourneyPage,
 });
 
-// ============================================================
-// CONFIGURATION
-// ============================================================
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYkYfmhZuOHkGAFwBqDhTpg3ekeVP2ZzPoo2Tw_O1lZ9dh37rFigJKdEy7ytZhkaQA/exec";
-const PARENT_DRIVE_FOLDER_ID = "1yCcnLb29ST1wPBGolNlpsgSbufVuoLwj";
+// ==========================================================
+// BACKEND: DATA
+// ==========================================================
+const TIMELINE = [
+  {
+    year: "2024",
+    events: [
+      { 
+        title: "Flash Mob 2024", 
+        body: "Spreading energy and awareness through rhythm. A vibrant performance that captured the campus's attention for a cause.",
+        photo: "https://lh3.googleusercontent.com/d/1okcn2Pl_vum45Zu3chqq5K2P59X6ox42" 
+      },
+      { 
+        title: "National Space Day", 
+        body: "Celebrating India's reach to the stars. A day to inspire scientific temper and pride among our volunteers.",
+        photo: "https://lh3.googleusercontent.com/d/1Z9-bG57e1Zr7bmfYZriu40gF4IRHpDnM" 
+      },
+      { 
+        title: "Hindi Diwas", 
+        body: "Honoring our linguistic heritage. A day dedicated to the beauty and cultural significance of our mother tongue.",
+        photo: "https://lh3.googleusercontent.com/d/1W2jl_kAo7JJEh0yEJNESM75Q8wBgjsln" 
+      },
+      { 
+        title: "IGKV NSS Foundation Day", 
+        body: "Celebrating the roots of our service. A moment to reflect on the history and impact of the NSS unit at our institution.",
+        photo: "https://lh3.googleusercontent.com/d/1PlKTxbmxoUerpj_fqkYBWVyRUl0q1Zmk" 
+      },
+      { 
+        title: "Cleanliness Drive", 
+        body: "Living the Swachh Bharat mission. Armed with brooms and dedication, we transformed our surrounding environment.",
+        photo: "https://lh3.googleusercontent.com/d/1S8zSynpn3rGu3u0Z34tLofGrwc84whsV" 
+      },
+      { 
+        title: "Induction Program", 
+        body: "Welcoming the fresh faces into the NSS family. The start of a new chapter of service for our juniors.",
+        photo: "https://lh3.googleusercontent.com/d/1ZY5e5ux9vtZE5qP5T6yAXDyvy0hDQkCP" 
+      },
+      { 
+        title: "Chitra-Varnan Pratiyogita", 
+        body: "Where creativity met social awareness. Volunteers used art to describe the reality of the society around them.",
+        photo: "https://lh3.googleusercontent.com/d/1YCMv__J7O46wWMqKQ8rGx9lsH2YZJ2dn" 
+      },
+      { 
+        title: "Tug Of War", 
+        body: "Unity, strength, and sportsmanship. A day of physical grit where we learned that we are stronger when we pull together.",
+        photo: "https://lh3.googleusercontent.com/d/1n93eiF7sqJrDv5fkMuhR2S0s2WODu9gV" 
+      },
+      { 
+        title: "Diwali Awareness", 
+        body: "Spreading the light of safety. Educating the community on an eco-friendly and responsible celebration of lights.",
+        photo: "https://lh3.googleusercontent.com/d/1CvZD5tCslRwy7dbxH2MFYh8_QXc3vtDq" 
+      },
+      { 
+        title: "Blood Donation Camp 2024", 
+        body: "The ultimate gift. Seniors and juniors joined hands to save lives, proving that service flows in our veins.",
+        photo: "https://lh3.googleusercontent.com/d/1efULAvK5Rp0H4K0p3cUOtaBjItmivOsE" 
+      }
+    ]
+  },
+  {
+    year: "2025",
+    events: [
+      { 
+        title: "National Youth Day", 
+        body: "Celebrating the birth of Swami Vivekananda. Empowering the youth to take charge of the nation's future.",
+        photo: "https://lh3.googleusercontent.com/d/135BLNlSAJRr6wiBBmbQl77E5xjTziER9" 
+      },
+      { 
+        title: "National Girl Child Day", 
+        body: "Advocating for equality and empowerment. Spreading awareness about the rights and potential of every girl child.",
+        photo: "https://lh3.googleusercontent.com/d/1kjEAf1G3zjr7MwKIp0a7lEiCIMthvfT_" 
+      },
+      { 
+        title: "Road Safety Week", 
+        body: "Service on the streets. Educating commuters on traffic rules to ensure everyone reaches home safely.",
+        photo: "https://lh3.googleusercontent.com/d/1SRmJbkSsI_sMHbF1Cjgg_W1l7JJE9R0J" 
+      },
+      { 
+        title: "7-Day Special Camp", 
+        body: "Life in the village. Seven days of shramadaan, community surveys, and bonds that will last a lifetime.",
+        photo: "https://lh3.googleusercontent.com/d/1iRf3jAjJCmewZ0ub3h4o_yZdGCJi1P8L" 
+      },
+      { 
+        title: "B Certificate Exam", 
+        body: "A milestone in the NSS journey. Demonstrating our theoretical and practical knowledge of social service.",
+        photo: "https://lh3.googleusercontent.com/d/1RCoTaOk7_bkj-xdFJkGu5N1OKX8Mguyd" 
+      },
+      { 
+        title: "Rabindranath Tagore Jayanti", 
+        body: "Celebrating the Bard of Bengal. A cultural tribute to the man who gave us the anthem of our service.",
+        photo: "https://lh3.googleusercontent.com/d/13nQ7H9CEHWbSLM8Apt7hkO2Xp64M1CB8" 
+      },
+      { 
+        title: "Ek Ped Maa Ke Naam 2.0", 
+        body: "Sustainable service. Planting saplings in honor of our mothers, securing a greener future for the generations to come.",
+        photo: "https://lh3.googleusercontent.com/d/1IUEOVQ5bNbYOO6nD9XFG-wPJk7ZQzjXw" 
+      },
+      { 
+        title: "Digital Poster Making Competition", 
+        body: "Using modern tools for age-old causes. Volunteers designed impactful digital art to spread social awareness.",
+        photo: "https://lh3.googleusercontent.com/d/1j5uApjwte_Qj7HJXtsPVFjavHazoWgHW" 
+      },
+      { 
+        title: "International Yoga Day", 
+        body: "Harmony of mind and body. A morning of collective wellness under the rising sun.",
+        photo: "https://lh3.googleusercontent.com/d/1T8rZ_ZyTPCXoRzlmOGH90WcKz9vZcQ5M" 
+      },
+      { 
+        title: "Sarv-Hitaya", 
+        body: "For the benefit of all. A dedicated drive to reach out to the marginalized and provide essential support.",
+        photo: "https://lh3.googleusercontent.com/d/15IjFP7rKRLZ5Jpa5xC3sCr1_kbKhx-GI" 
+      },
+      { 
+        title: "Independence Day 2025", 
+        body: "The tricolor flies high. A day of patriotic fervor and a renewed pledge to serve the motherland.",
+        photo: "https://lh3.googleusercontent.com/d/1v6Se-d04n5011WE61Hu88GrB4mdVIych" 
+      },
+      { 
+        title: "1st Year Induction", 
+        body: "Passing the torch. Welcoming the new batch of volunteers and teaching them the spirit of 'Not Me, But You'.",
+        photo: "https://lh3.googleusercontent.com/d/1SfIoI6V87JVOVeUJLygMkro3z1tZGYck" 
+      },
+      { 
+        title: "Flash Mob HIV/AIDS Awareness", 
+        body: "Breaking the silence. Using the power of street performance to educate and remove the stigma around AIDS.",
+        photo: "https://lh3.googleusercontent.com/d/1Ly3VbtgiuOfJayXBJ5DEx37BkWp2UP_9" 
+      },
+      { 
+        title: "Raktdaan Amrit Mahotsav 2.0", 
+        body: "Another massive milestone in saving lives. A day of sacrifice and immense pride for our unit.",
+        photo: "https://lh3.googleusercontent.com/d/1-OoMvpDK_-_FihCeNkvw8awnYLzWsaE0" 
+      },
+      { 
+        title: "Oath Taking Seva Pakhwada", 
+        body: "A fortnight of commitment. Renewing our vows to remain selfless and dedicated to the mission of service.",
+        photo: "https://lh3.googleusercontent.com/d/1gOEB-uxa2Dg7V5JmCA2YGe_GgKXUApce" 
+      },
+      { 
+        title: "NSS Foundation Day", 
+        body: "Celebrating another year of the unit's existence. A day of joy, awards, and looking back at our achievements.",
+        photo: "https://lh3.googleusercontent.com/d/1FaXkcoUHUHX35Poi2zrjuOi9I86Bfbsm" 
+      },
+      { 
+        title: "Diwali Awareness And Fundraising", 
+        body: "Bringing lights to the dark corners. Raising funds through charity to support those in need during the festive season.",
+        photo: "https://lh3.googleusercontent.com/d/1RCoTaOk7_bkj-xdFJkGu5N1OKX8Mguyd" 
+      },
+      { 
+        title: "One Day Camp", 
+        body: "Intense, short-term service. A focused drive to complete a specific community goal within 24 hours.",
+        photo: "https://lh3.googleusercontent.com/d/1iVFm_wYfEPtF7Cu_jXae9np6-VJN9-_i" 
+      },
+      { 
+        title: "1st Dec World AIDS Day", 
+        body: "A global stand for health. Joining the world in spreading awareness and honoring those lost to the fight.",
+        photo: "https://lh3.googleusercontent.com/d/10MhtFSiXZLN4B9XSvwtGWPKcKkpnSFUe" 
+      },
+      { 
+        title: "Samarpanam (Blood donation Camp)", 
+        body: "A dedicated act of surrender to the cause. Our final blood drive of the session, fueled by pure passion.",
+        photo: "https://lh3.googleusercontent.com/d/11xo6i7EqVIuXtka5-K_DVNlH5w4FZ-bI" 
+      }
+    ]
+  },
+  {
+    year: "2026",
+    events: [
+      { 
+        title: "Run For Swadeshi", 
+        body: "Fitness meets nationalism. A marathon dedicated to promoting local products and a healthy lifestyle.",
+        photo: "https://lh3.googleusercontent.com/d/1Aalmm41I-6yDlFZS_GIqvqi5-7ugf8Or" 
+      },
+      { 
+        title: "7-Day Special Unit Camp", 
+        body: "The final camp for our seniors. A bittersweet week of memories, shramadaan, and saying goodbye to the fields.",
+        photo: "https://lh3.googleusercontent.com/d/16--9UmAdhJF7SA7uNTCZDJ9_wh5Iha94" 
+      }
+    ]
+  }
+];
 
-function MemoriesPage() {
+function JourneyPage() {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef(null);
-  const [albums, setAlbums] = useState<any[]>([]);
-  const [activeAlbumId, setActiveAlbumId] = useState<string | null>(null);
-  const [albumPhotos, setAlbumPhotos] = useState<any[]>([]);
-  const [loadingVault, setLoadingVault] = useState(true);
-  const [loadingPhotos, setLoadingPhotos] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState<any>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    fetch(`${GOOGLE_SCRIPT_URL}?mode=list&id=${PARENT_DRIVE_FOLDER_ID}`)
-      .then(res => res.json())
-      .then(data => { setAlbums(data); setLoadingVault(false); });
-  }, []);
-
-  useEffect(() => {
-    if (activeAlbumId) {
-      setLoadingPhotos(true);
-      setAlbumPhotos([]); 
-      fetch(`${GOOGLE_SCRIPT_URL}?mode=photos&id=${activeAlbumId}`)
-        .then(res => res.json())
-        .then(data => { setAlbumPhotos(data); setLoadingPhotos(false); });
-    }
-  }, [activeAlbumId]);
+  const storyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!vantaEffect) {
-      setVantaEffect(CLOUDS({
-        el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        /* BRIGHT CLOUD COLORS */
-        backgroundColor: 0xf1eef7, 
-        skyColor: 0x244681,   
-        cloudColor: 0x143047,
-        cloudShadowColor: 0xf5f9fc,
-        sunColor: 0xfff9f2,
-        sunGlareColor: 0xfff9f7,
-        sunlightColor: 0xf7f4f0,
-        speed: 1.0 
-      }));
+      setVantaEffect(
+        CLOUDS({
+          el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
+          /* UPDATED TO YOUR PREFERRED COLORS */
+          backgroundColor: 0xf1eef7, 
+          skyColor: 0x244681,   
+          cloudColor: 0x143047,
+          cloudShadowColor: 0xf5f9fc,
+          sunColor: 0xfff9f2,
+          sunGlareColor: 0xfff9f7,
+          sunlightColor: 0xf7f4f0,
+          speed: 1.0
+        })
+      );
     }
     return () => { if (vantaEffect) vantaEffect.destroy(); };
   }, [vantaEffect]);
 
-  const activeAlbum = albums.find(a => a.id === activeAlbumId);
+  const scrollToStory = () => storyRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="relative min-h-screen text-slate-900 overflow-x-hidden selection:bg-accent/20">
       <TopNav />
-      {/* Background Layers */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
+      
+      {/* Light Overlay instead of black */}
       <div className="fixed inset-0 bg-white/10 pointer-events-none z-[1]" />
 
-      <div className="relative z-10 pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          
-          <div className="text-center mb-16">
-            <Reveal>
-              <h1 className="font-display text-5xl sm:text-8xl text-[#060642] tracking-tighter mb-4">
-                {activeAlbum ? activeAlbum.title : "Memories Vault"}
-              </h1>
-              <p className="font-script text-[#c81e1e] text-3xl italic">
-                {activeAlbum ? "Step inside the moment." : "Unfolding the chapters of your journey."}
-              </p>
-            </Reveal>
-            {activeAlbumId && (
-              <button onClick={() => setActiveAlbumId(null)}
-                className="mt-8 flex items-center gap-2 mx-auto text-[#244681] hover:text-[#060642] transition-all uppercase tracking-widest text-[10px] font-black"
-              >
-                <ChevronLeft size={14} /> Return to Vault
-              </button>
-            )}
-          </div>
+      <div className="relative z-10">
+        
+        {/* HERO SECTION */}
+        <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
+          <Reveal>
+            <img src={eminenceLogo} alt="Logo" className="h-90 w-90 mx-auto mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]" />
+            <div className="mb-6 px-4 py-1 border border-accent/30 rounded-full bg-white/40 backdrop-blur-md">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-[#060642] font-black">National Service Scheme • Batch 2022—2026</p>
+            </div>
+          </Reveal>
+          <Reveal delay={200}>
+            <h1 className="font-display text-7xl sm:text-9xl tracking-tighter leading-none text-[#060642]">
+               <span className="italic">Eminence</span>
+            </h1>
+            <p className="font-display italic text-4xl sm:text-5xl mt-4 text-[#244681] tracking-widest">Farewell - 2k26</p>
+          </Reveal>
+          <Reveal delay={400}>
+            <button onClick={scrollToStory} className="mt-12 px-10 py-4 bg-[#060642] text-white font-black uppercase tracking-widest rounded-full hover:scale-105 transition-all shadow-[0_0_40px_rgba(6,6,66,0.2)]">Relive Memories</button>
+          </Reveal>
+        </section>
 
-          <AnimatePresence mode="wait">
-            {loadingVault ? (
-              <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-[#244681]/40 animate-pulse mt-20 uppercase tracking-[0.5em] font-display">
-                Connecting to Vault...
-              </motion.div>
-            ) : !activeAlbumId ? (
-              <motion.div key="vault" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                {albums.map((album) => (
-                  <div key={album.id} onClick={() => setActiveAlbumId(album.id)}
-                    className="group cursor-pointer relative aspect-square rounded-[2.5rem] overflow-hidden border border-white/60 bg-white/40 backdrop-blur-md hover:-translate-y-2 transition-all shadow-xl"
+        <div ref={storyRef} className="pt-32 pb-24 px-6 text-center">
+            <p className="font-script text-[#c81e1e] text-4xl mb-4 italic">the story of</p>
+            <h1 className="font-display text-6xl sm:text-9xl text-[#060642] tracking-tighter">Their NSS Journey</h1>
+        </div>
+
+        {/* ALTERNATING TIMELINE SECTION */}
+        <section className="relative pb-40 px-4 sm:px-6 max-w-7xl mx-auto">
+          {/* Main Vertical Line (Changed to Navy) */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[#244681]/30 to-transparent hidden md:block" />
+          
+          <div className="space-y-40">
+            {TIMELINE.map((yearGroup, yearIndex) => {
+              const isYearLeft = yearIndex % 2 === 0;
+              return (
+                <div key={yearGroup.year} className="relative">
+                  
+                  {/* Big Year Marker */}
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    className="flex justify-center mb-20 relative z-20"
                   >
-                    {album.cover ? (
-                      <img src={album.cover} className="absolute inset-0 h-full w-full object-cover opacity-80 group-hover:scale-110 group-hover:opacity-100 transition-all duration-1000" />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-slate-200 font-display text-9xl italic">?</div>
-                    )}
-                    {/* Gradient changed to light-to-transparent */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent flex flex-col justify-end p-10">
-                      <p className="text-[#c81e1e] text-[10px] tracking-[0.3em] font-black mb-2 uppercase">{album.category}</p>
-                      <h3 className="font-display text-4xl text-[#060642] tracking-tight leading-none">{album.title}</h3>
+                    <div className="bg-white/80 border-2 border-[#244681]/40 px-8 py-3 rounded-2xl shadow-xl backdrop-blur-md">
+                      <span className="font-display text-[#060642] text-5xl sm:text-7xl italic">{yearGroup.year}</span>
                     </div>
-                  </div>
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div key="photos" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
-                {loadingPhotos ? (
-                   <p className="text-center text-[#244681]/40 animate-bounce font-script text-3xl py-20">Gathering photos...</p>
-                ) : (
-                  <div className="columns-1 sm:columns-2 lg:columns-3 gap-8">
-                    {albumPhotos.map((item: any, i: number) => (
-                      <motion.div key={i} layout onMouseEnter={() => setHoveredIndex(i)} onMouseLeave={() => setHoveredIndex(null)} onClick={() => setSelectedMedia(item)}
-                        className="break-inside-avoid mb-8 relative group rounded-3xl overflow-hidden border border-white/60 bg-white/40 backdrop-blur-sm shadow-xl cursor-pointer"
+                  </motion.div>
+
+                  <div className="space-y-32">
+                    {yearGroup.events.map((event, eventIndex) => (
+                      <motion.div 
+                        key={eventIndex}
+                        initial={{ opacity: 0, x: isYearLeft ? -100 : 100 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className={`flex flex-col ${isYearLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-center`}
                       >
-                        {item.type === "video" ? (
-                          <div className="aspect-video w-full relative">
-                            {hoveredIndex === i ? (
-                              <iframe src={item.url + "?autoplay=1&mute=1"} className="absolute inset-0 w-full h-full" allow="autoplay" />
-                            ) : (
-                              <div className="absolute inset-0 w-full h-full">
-                                <img src={item.thumbnailUrl} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />
-                                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                   <div className="w-16 h-16 rounded-full bg-white/40 border border-white flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-lg"><span className="text-[#060642] text-2xl ml-1">▶</span></div>
-                                   <p className="text-[9px] text-[#060642]/60 uppercase tracking-widest font-black">Hover to Play</p>
-                                </div>
-                              </div>
-                            )}
+                        {/* 1. TEXT SIDE */}
+                        <div className="w-full md:w-1/2 space-y-4">
+                          <div className={`p-8 rounded-[2rem] bg-white/40 border border-white/60 backdrop-blur-md shadow-xl ${isYearLeft ? "md:text-right" : "md:text-left"}`}>
+                            <h3 className="font-display text-3xl sm:text-4xl text-[#060642] mb-4 leading-tight">{event.title}</h3>
+                            <p className="text-[#060642]/60 leading-relaxed text-lg italic">{event.body}</p>
                           </div>
-                        ) : (
-                          <img src={item.url} className="w-full h-auto transition-transform duration-700 group-hover:scale-105" />
-                        )}
+                        </div>
+
+                        {/* 2. CENTER NODE (Desktop Only) */}
+                        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#060642] shadow-[0_0_15px_rgba(6,6,66,0.3)] z-30" />
+
+                        {/* 3. PHOTO SIDE */}
+                        <div className="w-full md:w-1/2">
+                          {event.photo ? (
+                            <div className="relative p-2 bg-white/60 border border-white/60 rounded-[2.5rem] shadow-2xl overflow-hidden group">
+                                <img 
+                                  src={event.photo} 
+                                  alt={event.title} 
+                                  className="w-full aspect-[4/3] object-cover rounded-[2rem] transition-all duration-700 group-hover:scale-105" 
+                                />
+                            </div>
+                          ) : (
+                            <div className="aspect-[4/3] rounded-[2.5rem] bg-white/20 border border-dashed border-[#060642]/10 flex items-center justify-center">
+                               <p className="text-[#060642]/20 font-display italic">Memory Captured in our Hearts</p>
+                            </div>
+                          )}
+                        </div>
                       </motion.div>
                     ))}
                   </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-      {/* Lightbox - Keep dark for focus on media */}
-      <AnimatePresence>
-        {selectedMedia && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#060642]/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
-            <div className="absolute top-6 right-6 flex gap-4 z-[110]">
-               <a href={selectedMedia.downloadUrl} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 hover:bg-white hover:text-[#060642] flex items-center justify-center transition-all text-white border border-white/10"><Download size={20} /></a>
-               <button onClick={() => setSelectedMedia(null)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-red-500 flex items-center justify-center transition-all text-white border border-white/10"><X size={20} /></button>
-            </div>
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="relative w-full max-w-5xl flex flex-col items-center">
-              {selectedMedia.type === "video" ? (<iframe src={selectedMedia.url} className="w-full aspect-video rounded-3xl shadow-2xl" allow="autoplay" />) : (<img src={selectedMedia.url} className="max-h-[80vh] w-auto rounded-3xl shadow-2xl border border-white/10" />)}
-              <p className="mt-8 font-script text-white text-3xl text-center drop-shadow-lg">{selectedMedia.caption}</p>
-            </motion.div>
-            <div className="absolute inset-0 -z-10" onClick={() => setSelectedMedia(null)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <footer className="py-20 text-center border-t border-black/5 bg-white/10 backdrop-blur-sm">
+            <p className="font-script text-[#c81e1e] text-3xl mb-4 italic">Not Me, But You</p>
+            <p className="text-[10px] uppercase tracking-[0.5em] text-[#060642]/30 italic">End of an Era · 2022 — 2026</p>
+        </footer>
+      </div>
     </div>
   );
 }
