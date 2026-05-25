@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import nssLogo from "../assets/nss-logo.png"; // REVERTED
-import heroBg from "../assets/hero-bg.jpg";
+import { motion, AnimatePresence } from "framer-motion";
+import nssLogo from "../assets/nss-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,67 +29,132 @@ const LOADING_PHRASES = [
   "Initializing NSS Memories...",
   "Recalling the camps and drives...",
   "Gathering gratitude from juniors...",
-  "Almost there...",
+  "Preparing the farewell...",
 ];
 
 function Landing() {
   const navigate = useNavigate();
-  const [revealed, setRevealed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [phraseIndex, setPhraseIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setLoadingProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setIsLoading(false);
-            setTimeout(() => setRevealed(true), 100);
-          }, 500);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, 40);
+    // Artificial load time for the experience
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3500);
 
     const phraseInterval = setInterval(() => {
       setPhraseIndex((prev) => (prev + 1) % LOADING_PHRASES.length);
-    }, 1200);
+    }, 900);
 
-    return () => { clearInterval(interval); clearInterval(phraseInterval); };
+    return () => {
+      clearTimeout(timer);
+      clearInterval(phraseInterval);
+    };
   }, []);
 
-  const goNext = () => { if (!revealed) return; navigate({ to: "/tribute" }); };
+  const goNext = () => {
+    if (isLoading) return;
+    navigate({ to: "/tribute" });
+  };
 
   return (
-    <div onClick={goNext} role="button" tabIndex={0} className="relative min-h-[100svh] w-full overflow-hidden cursor-pointer select-none bg-background text-foreground">
-      {isLoading && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0a0a0a]">
-          <img src={nssLogo} alt="Loading" className="h-24 w-24 mb-8 animate-pulse opacity-80" />
-          <div className="w-64 h-[1px] bg-white/10 overflow-hidden">
-            <div className="h-full bg-accent transition-all duration-300" style={{ width: `${loadingProgress}%` }} />
-          </div>
-          <p className="mt-6 font-script text-accent text-xl">{LOADING_PHRASES[phraseIndex]}</p>
-        </div>
-      )}
+    <div
+      onClick={goNext}
+      className="relative min-h-[100svh] w-full overflow-hidden cursor-pointer select-none bg-[#02021a] text-white"
+    >
+      {/* MOVING STARFIELD CSS */}
+      <style>{`
+        @keyframes move-stars {
+          from { transform: translateY(0); }
+          to { transform: translateY(-1000px); }
+        }
+        .stars-container {
+          position: absolute;
+          width: 200%;
+          height: 200%;
+          background: transparent;
+          background-image: radial-gradient(white 1px, transparent 0);
+          background-size: 50px 50px;
+          animation: move-stars 100s linear infinite;
+          opacity: 0.3;
+        }
+        .stars-small {
+          background-size: 30px 30px;
+          animation-duration: 150s;
+          opacity: 0.15;
+        }
+      `}</style>
 
-      <img src={heroBg} alt="" className={`absolute inset-0 h-full w-full object-cover transition-all duration-[3000ms] ${revealed ? "opacity-60 scale-100" : "opacity-0 scale-110"}`} />
-      <div className="absolute inset-0 starfield opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background/80 pointer-events-none" />
+      {/* BACKGROUND LAYERS */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#02021a] via-[#060642] to-[#02021a]" />
+      <div className="stars-container" />
+      <div className="stars-container stars-small" />
+      
+      {/* LOADING OVERLAY */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 1 }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#02021a]"
+          >
+            <motion.img 
+              src={nssLogo} 
+              animate={{ opacity: [0.4, 1, 0.4] }} 
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="h-24 w-24 mb-8" 
+            />
+            <div className="w-48 h-[2px] bg-white/10 relative overflow-hidden">
+                <motion.div 
+                    className="absolute inset-0 bg-[#c81e1e]"
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "0%" }}
+                    transition={{ duration: 3.5, ease: "easeInOut" }}
+                />
+            </div>
+            <p className="mt-6 font-script text-[#c81e1e] text-2xl italic tracking-wide">
+              {LOADING_PHRASES[phraseIndex]}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+      {/* MAIN CONTENT */}
       <div className="relative z-10 min-h-[100svh] flex flex-col items-center justify-center text-center px-6 py-16">
-        <div className="transition-all ease-out" style={{ transitionDuration: "1800ms", opacity: revealed ? 1 : 0 }}>
-          <img src={nssLogo} alt="NSS Logo" className="h-28 w-28 sm:h-36 sm:w-36 mx-auto drop-shadow-[0_0_40px_rgba(255,200,100,0.35)]" />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={!isLoading ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1.2, delay: 0.2 }}
+        >
+          <img src={nssLogo} alt="NSS Logo" className="h-32 w-32 sm:h-44 sm:w-44 mx-auto drop-shadow-[0_0_50px_rgba(255,255,255,0.2)] mb-8" />
+          
+          <p className="font-script text-[#c81e1e] text-3xl sm:text-4xl mb-4 italic tracking-wider">
+            {BATCH_LABEL}
+          </p>
 
-        <p className="font-script text-accent text-2xl sm:text-3xl mt-6 transition-all" style={{ opacity: revealed ? 1 : 0 }}>{BATCH_LABEL}</p>
-        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl mt-3 leading-tight transition-all" style={{ opacity: revealed ? 1 : 0 }}>
-          <span className="italic text-gradient-gold">{NSS_MOTTO}</span>
-        </h1>
-        <p className="mt-8 max-w-xl text-muted-foreground transition-all" style={{ opacity: revealed ? 1 : 0 }}>{NSS_MESSAGE}</p>
-        <p className="absolute bottom-8 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-muted-foreground/70"><span className="animate-pulse">click anywhere to enter</span></p>
+          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl leading-tight mb-8">
+            <span className="italic bg-gradient-to-b from-white via-white/80 to-transparent bg-clip-text text-transparent">
+                {NSS_MOTTO}
+            </span>
+          </h1>
+
+          <p className="max-w-2xl mx-auto text-white/60 text-lg leading-relaxed italic px-4">
+            {NSS_MESSAGE}
+          </p>
+
+          {/* Animated Footer Hint */}
+          <motion.div 
+            animate={{ opacity: [0.3, 0.8, 0.3], y: [0, 5, 0] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+            className="mt-20 flex flex-col items-center gap-4"
+          >
+            <div className="w-[1px] h-12 bg-gradient-to-b from-white/40 to-transparent" />
+            <p className="text-xs uppercase tracking-[0.5em] text-white/40 font-bold">
+               click anywhere to enter
+            </p>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
