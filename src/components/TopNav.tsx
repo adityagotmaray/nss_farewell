@@ -19,7 +19,7 @@ export default function TopNav() {
         <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-3 group transition-transform hover:scale-105">
           <img src={nssLogo} alt="NSS" className="h-10 w-10 sm:h-12 sm:w-12" />
           <div className="leading-tight">
-            <p className="font-display text-sm sm:text-lg text-[#060642] font-black uppercase tracking-tight">NSS Farewell</p>
+            <p className="font-display text-sm sm:text-lg text-[#060642] font-black uppercase tracking-tight">NSS bids Farewell to</p>
             <p className="font-sans text-white text-[10px] sm:text-xs font-bold opacity-90">Batch 2022 — 2026</p>
           </div>
         </Link>
