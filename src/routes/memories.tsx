@@ -16,6 +16,12 @@ export const Route = createFileRoute("/memories")({
   component: MemoriesPage,
 });
 
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYkYfmhZuOHkGAFwBqDhTpg3ekeVP2ZzPoo2Tw_O1lZ9dh37rFigJKdEy7ytZhkaQA/exec";
+const PARENT_DRIVE_FOLDER_ID = "1yCcnLb29ST1wPBGolNlpsgSbufVuoLwj";
+
 // Helper to construct Google Drive direct links reliably
 const getDriveUrl = (id: string) => `https://lh3.googleusercontent.com/d/${id}=s2000`;
 
@@ -37,12 +43,19 @@ function MemoriesPage() {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef(null);
   
+  // Data States
   const [albums, setAlbums] = useState<any[]>([]);
   const [activeAlbumId, setActiveAlbumId] = useState<string | null>(null);
   const [albumPhotos, setAlbumPhotos] = useState<any[]>([]);
   const [loadingVault, setLoadingVault] = useState(true);
   const [loadingPhotos, setLoadingPhotos] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<any>(null);
+
+  // Filters
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+
+  // Slideshow
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageLoading, setImageLoading] = useState(true);
 
@@ -51,10 +64,39 @@ function MemoriesPage() {
   const nextSlide = () => { setImageLoading(true); setCurrentSlide((prev) => (prev + 1) % shuffledHighlights.length); };
   const prevSlide = () => { setImageLoading(true); setCurrentSlide((prev) => (prev - 1 + shuffledHighlights.length) % shuffledHighlights.length); };
 
+  // Vault Filtering
+  const filteredAlbums = useMemo(() => {
+    let list = albums.filter(a => 
+      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.category?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    return list.sort((a, b) => {
+      const yearA = parseInt(a.title.match(/\d{4}/)?.[0] || "0");
+      const yearB = parseInt(b.title.match(/\d{4}/)?.[0] || "0");
+      return sortOrder === 'newest' ? yearB - yearA : yearA - yearB;
+    });
+  }, [albums, searchQuery, sortOrder]);
+
+  // Effects
   useEffect(() => {
-    const timer = setInterval(nextSlide, 7000);
+    fetch(`${GOOGLE_SCRIPT_URL}?mode=list&id=${PARENT_DRIVE_FOLDER_ID}`)
+      .then(res => res.json())
+      .then(data => { setAlbums(data); setLoadingVault(false); })
+      .catch(() => setLoadingVault(false));
+
+    const timer = setInterval(nextSlide, 8000);
     return () => clearInterval(timer);
   }, [shuffledHighlights]);
+
+  useEffect(() => {
+    if (activeAlbumId) {
+      setLoadingPhotos(true);
+      fetch(`${GOOGLE_SCRIPT_URL}?mode=photos&id=${activeAlbumId}`)
+        .then(res => res.json())
+        .then(data => { setAlbumPhotos(data); setLoadingPhotos(false); })
+        .catch(() => setLoadingPhotos(false));
+    }
+  }, [activeAlbumId]);
 
   useEffect(() => {
     if (!vantaEffect) {
@@ -67,6 +109,8 @@ function MemoriesPage() {
     return () => { if (vantaEffect) vantaEffect.destroy(); };
   }, [vantaEffect]);
 
+  const activeAlbum = albums.find(a => a.id === activeAlbumId);
+
   return (
     <div className="relative min-h-screen text-slate-900 overflow-x-hidden">
       <TopNav />
@@ -74,6 +118,8 @@ function MemoriesPage() {
       <div className="fixed inset-0 bg-white/10 pointer-events-none z-[1]" />
 
       <div className="relative z-10">
+        
+        {/* HERO SLIDESHOW - UPDATED FOR VERTICAL PHOTOS */}
         {!activeAlbumId && (
           <section className="pt-32 pb-12 px-6">
             <div className="max-w-7xl mx-auto">
@@ -84,13 +130,11 @@ function MemoriesPage() {
                 </div>
               </Reveal>
 
-              {/* SLIDESHOW CONTAINER */}
-              <div className="group relative h-[500px] sm:h-[700px] w-full rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white bg-[#060642]/10 backdrop-blur-md">
+              <div className="group relative h-[500px] sm:h-[750px] w-full rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white bg-white/20 backdrop-blur-md">
                 
                 {imageLoading && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-white/10 backdrop-blur-sm">
-                        <Loader2 className="w-10 h-10 text-[#060642] animate-spin mb-4" />
-                        <p className="text-[#060642]/40 font-display uppercase tracking-[0.2em] text-[10px]">Loading Memory...</p>
+                    <div className="absolute inset-0 flex items-center justify-center z-20 bg-white/10 backdrop-blur-sm">
+                        <Loader2 className="w-10 h-10 text-[#060642] animate-spin opacity-40" />
                     </div>
                 )}
 
@@ -100,17 +144,16 @@ function MemoriesPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 1 }}
                     className="absolute inset-0 w-full h-full"
                   >
-                    {/* 1. BLURRED BACKGROUND (Handles vertical photo edges) */}
+                    {/* Blurred Background Layer */}
                     <img
                       src={getDriveUrl(shuffledHighlights[currentSlide])}
                       referrerPolicy="no-referrer"
-                      className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110"
+                      className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-110"
                     />
-                    
-                    {/* 2. SHARP FOREGROUND (Shows entire image without cropping) */}
+                    {/* Sharp Foreground Layer (Contain avoids cropping) */}
                     <img
                       src={getDriveUrl(shuffledHighlights[currentSlide])}
                       onLoad={() => setImageLoading(false)}
@@ -120,17 +163,14 @@ function MemoriesPage() {
                   </motion.div>
                 </AnimatePresence>
                 
-                {/* Click Navigation Overlays */}
                 <div onClick={prevSlide} className="absolute left-0 inset-y-0 w-1/4 z-30 cursor-pointer" />
                 <div onClick={nextSlide} className="absolute right-0 inset-y-0 w-1/4 z-30 cursor-pointer" />
 
-                {/* Arrows */}
                 <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover:opacity-100 transition-all z-40 pointer-events-none">
-                   <button onClick={prevSlide} className="w-14 h-14 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 active:scale-95 transition-all text-[#060642]"><ChevronLeft /></button>
-                   <button onClick={nextSlide} className="w-14 h-14 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 active:scale-95 transition-all text-[#060642]"><ChevronRight /></button>
+                   <button onClick={prevSlide} className="w-14 h-14 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 text-[#060642]"><ChevronLeft /></button>
+                   <button onClick={nextSlide} className="w-14 h-14 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 text-[#060642]"><ChevronRight /></button>
                 </div>
 
-                {/* Dots */}
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-40">
                    {shuffledHighlights.map((_, i) => (
                       <button 
@@ -145,8 +185,97 @@ function MemoriesPage() {
           </section>
         )}
 
-        {/* ... (Rest of your Vault code remains the same as previously optimized) ... */}
+        {/* VAULT SECTION */}
+        <section className={`px-6 pb-20 ${activeAlbumId ? 'pt-40' : 'pt-20'}`}>
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <Reveal>
+                <h1 className="font-display text-5xl sm:text-8xl text-[#060642] tracking-tighter mb-4">
+                  {activeAlbum ? activeAlbum.title : "Memories Vault"}
+                </h1>
+                <p className="font-script text-[#c81e1e] text-3xl italic">
+                  {activeAlbum ? "Every picture tells a story." : "Our digital archive."}
+                </p>
+              </Reveal>
+            </div>
+
+            {!activeAlbumId && !loadingVault && (
+              <div className="max-w-4xl mx-auto mb-16 flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-grow">
+                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                  <input 
+                    type="text" placeholder="Search events..." value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-white/60 border border-white/80 rounded-3xl pl-16 pr-8 py-5 text-[#060642] outline-none backdrop-blur-md shadow-xl"
+                  />
+                </div>
+                <button 
+                  onClick={() => setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest')}
+                  className="bg-white/60 border border-white/80 px-8 py-5 rounded-3xl flex items-center gap-3 font-bold text-[10px] uppercase tracking-widest text-[#060642] shadow-xl"
+                >
+                  {sortOrder === 'newest' ? <SortDesc size={16}/> : <SortAsc size={16}/>}
+                  {sortOrder === 'newest' ? "Newest" : "Oldest"}
+                </button>
+              </div>
+            )}
+
+            {activeAlbumId && (
+              <button onClick={() => setActiveAlbumId(null)} className="mb-12 flex items-center gap-2 mx-auto text-[#060642] font-black uppercase tracking-widest text-[10px]"><ChevronLeft size={14} /> Back to Vault</button>
+            )}
+
+            <AnimatePresence mode="wait">
+              {loadingVault ? (
+                <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-[#060642]/10 rounded-[3rem]">
+                  <Loader2 className="w-10 h-10 text-[#060642] animate-spin mb-4" />
+                  <p className="opacity-40 uppercase tracking-[0.3em] text-[10px]">Accessing Archives...</p>
+                </div>
+              ) : !activeAlbumId ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                  {filteredAlbums.map((album) => (
+                    <div key={album.id} onClick={() => setActiveAlbumId(album.id)}
+                      className="group cursor-pointer relative aspect-square rounded-[2.5rem] overflow-hidden border border-white/60 bg-white/40 backdrop-blur-md shadow-xl"
+                    >
+                      {album.cover && <img src={album.cover} referrerPolicy="no-referrer" className="absolute inset-0 h-full w-full object-cover opacity-80 group-hover:scale-110 transition-all duration-1000" />}
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/20 to-transparent flex flex-col justify-end p-10">
+                        <p className="text-[#c81e1e] text-[10px] tracking-[0.3em] font-black mb-2 uppercase">{album.category || "Event"}</p>
+                        <h3 className="font-display text-4xl text-[#060642] tracking-tight">{album.title}</h3>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
+                  {loadingPhotos ? (
+                     <div className="flex flex-col items-center justify-center py-40"><Loader2 className="w-12 h-12 text-[#c81e1e] animate-spin mb-4" /><p className="font-script text-3xl">Loading Album...</p></div>
+                  ) : (
+                    <div className="columns-1 sm:columns-2 lg:columns-3 gap-8">
+                      {albumPhotos.map((item: any, i: number) => (
+                        <motion.div key={i} onClick={() => setSelectedMedia(item)} className="break-inside-avoid mb-8 relative group rounded-3xl overflow-hidden shadow-xl cursor-pointer">
+                          <img src={item.url} referrerPolicy="no-referrer" className="w-full h-auto transition-transform duration-700 group-hover:scale-105" />
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </section>
       </div>
+
+      {/* LIGHTBOX */}
+      <AnimatePresence>
+        {selectedMedia && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#060642]/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4" onClick={() => setSelectedMedia(null)}>
+            <div className="absolute top-6 right-6 flex gap-4">
+               <a href={selectedMedia.downloadUrl} onClick={(e) => e.stopPropagation()} target="_blank" className="w-12 h-12 rounded-full bg-white/10 hover:bg-white text-white hover:text-[#060642] flex items-center justify-center transition-all"><Download size={20} /></a>
+               <button onClick={() => setSelectedMedia(null)} className="w-12 h-12 rounded-full bg-white/10 hover:bg-red-500 text-white flex items-center justify-center transition-all"><X size={20} /></button>
+            </div>
+            <img src={selectedMedia.url} referrerPolicy="no-referrer" className="max-h-[80vh] w-auto rounded-3xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
+            <p className="mt-8 font-script text-white text-3xl text-center">{selectedMedia.caption}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
