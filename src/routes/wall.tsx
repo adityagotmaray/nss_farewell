@@ -17,6 +17,9 @@ export const Route = createFileRoute("/wall")({
   component: WallPage,
 });
 
+// The pastel color palette for sticky notes
+const NOTE_COLORS = ['#fef9c3', '#fce7f3', '#dbeafe', '#dcfce7', '#ede9fe'];
+
 function WallPage() {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef(null);
@@ -36,7 +39,7 @@ function WallPage() {
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName || !newMessage) return;
-    const { error } = await supabase.from('messages').insert([{ name: newName, contents: newMessage }]);
+    const { error } = await supabase.from('messages').insert([{ name: newName, content: newMessage }]);
     if (!error) { setNewName(""); setNewMessage(""); fetchNotes(); }
   };
 
@@ -50,14 +53,26 @@ function WallPage() {
     return () => { if (vantaEffect) vantaEffect.destroy(); };
   }, [vantaEffect]);
 
+  // Helper to pick a stable random color/rotation based on ID
+  const getNoteStyle = (id: any) => {
+    const num = typeof id === 'number' ? id : (id?.length || 0);
+    return {
+      color: NOTE_COLORS[num % NOTE_COLORS.length],
+      rotate: (num % 7) - 3 // Generates -3 to +3 degrees
+    };
+  };
+
   return (
     <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
       <TopNav />
+      
+      {/* 1. CLOUD BACKGROUND */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
+      <div className="fixed inset-0 bg-black/40 pointer-events-none z-[1]" />
 
       <div className="relative z-10 pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
+          
           <div className="text-center mb-16">
             <Reveal>
               <p className="font-script text-accent text-4xl mb-2 italic">leave your mark</p>
@@ -65,36 +80,72 @@ function WallPage() {
             </Reveal>
           </div>
 
+          {/* INPUT FORM */}
           <section className="max-w-2xl mx-auto mb-24 relative z-50">
             <form onSubmit={handleAddNote} className="bg-black/60 backdrop-blur-2xl border border-white/10 p-10 rounded-[2.5rem] shadow-2xl">
               <h3 className="text-accent font-display text-3xl mb-8 italic">Write a Note...</h3>
               <input type="text" placeholder="Your name" value={newName} onChange={(e) => setNewName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 mb-6 text-white focus:border-accent/50 outline-none transition-all placeholder:text-white/20"/>
               <textarea placeholder="Share a memory..." rows={3} value={newMessage} onChange={(e) => setNewMessage(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 mb-8 text-white focus:border-accent/50 outline-none transition-all resize-none placeholder:text-white/20"/>
               <div className="flex justify-end">
-                <button type="submit" className="px-10 py-4 bg-accent text-black font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)]">Pin to Wall</button>
+                <button type="submit" className="px-10 py-4 bg-accent text-black font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all">Pin to Wall</button>
               </div>
             </form>
           </section>
 
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-10">
-            <AnimatePresence>
-              {notes.map((note: any) => (
-                <motion.div key={note.id} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="break-inside-avoid mb-10 group relative">
-                  <div className="relative p-8 bg-[#1a2135]/80 backdrop-blur-lg border-t-4 border-accent shadow-2xl transition-all group-hover:-translate-y-2">
-                    <div className="absolute top-0 right-0 w-8 h-8 bg-[#0a0f1d]" style={{ clipPath: 'polygon(0 0, 100% 100%, 0 100%)' }} />
-                    <p className="font-script text-white text-2xl leading-relaxed italic opacity-95 mb-8">"{note.contents}"</p>
-                    <div className="flex justify-between items-end border-t border-white/10 pt-6">
-                      <div>
-                        <p className="font-display text-accent text-xl tracking-wide">{note.name}</p>
-                        <p className="text-[10px] text-white/30 tracking-[0.3em] uppercase mt-1">{new Date(note.created_at).toLocaleDateString()}</p>
+          {/* 2. THE CORKBOARD CONTAINER */}
+          <div className="bg-corkboard p-8 sm:p-12 rounded-3xl min-h-[600px] shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-10">
+              <AnimatePresence>
+                {notes.map((note: any) => {
+                  const style = getNoteStyle(note.id);
+                  return (
+                    <motion.div 
+                      key={note.id} 
+                      // 9. NOTE DROP-IN ANIMATION
+                      initial={{ y: -200, rotate: -10, opacity: 0 }} 
+                      animate={{ y: 0, rotate: style.rotate, opacity: 1 }} 
+                      transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                      className="break-inside-avoid mb-12 group relative"
+                    >
+                      {/* THE STICKY NOTE */}
+                      <div 
+                        style={{ backgroundColor: style.color }}
+                        className="relative p-8 shadow-[3px_4px_12px_rgba(0,0,0,0.25)] transition-transform hover:scale-105 hover:z-50 cursor-default"
+                      >
+                        {/* 📌 PUSHPIN ICON */}
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-3xl drop-shadow-md">📌</div>
+
+                        {/* Handwriting Style Message */}
+                        <p className="font-handwritten text-2xl leading-relaxed italic mb-8">
+                          "{note.content}"
+                        </p>
+
+                        <div className="flex justify-between items-end border-t border-black/10 pt-6 font-handwritten">
+                          <div>
+                            <p className="text-xl font-bold">{note.name}</p>
+                            <p className="text-[10px] uppercase tracking-widest opacity-40">
+                              {new Date(note.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                          
+                          {/* EMINENCE ICON LOGO */}
+                          <img 
+                            src={eminenceLogo} 
+                            className="w-8 h-8 object-contain opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" 
+                            alt="icon" 
+                          />
+                        </div>
+                        
+                        {/* Subtle tape effect or dog-ear can be added via CSS if needed, 
+                            but clean shadow + rotation is usually enough for the 'sticky' look */}
                       </div>
-                      <img src={eminenceLogo} className="w-8 h-8 object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" alt="icon" />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
