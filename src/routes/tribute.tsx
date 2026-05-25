@@ -31,47 +31,47 @@ const TIMELINE = [
       { 
         title: "National Space Day", 
         body: "Celebrating India's reach to the stars. A day to inspire scientific temper and pride among our volunteers.",
-        photo: "https://lh3.googleusercontent.com/d/1Z9-bG57e1Zr7bmfYZriu40gF4IRHpDnM" 
+        photo: "https://lh3.googleusercontent.com/d/1GsKWV_eRS9oq5aUfIqxqMm50cco04V4T" 
       },
       { 
         title: "Hindi Diwas", 
         body: "Honoring our linguistic heritage. A day dedicated to the beauty and cultural significance of our mother tongue.",
-        photo: "https://lh3.googleusercontent.com/d/1W2jl_kAo7JJEh0yEJNESM75Q8wBgjsln" 
+        photo: "https://lh3.googleusercontent.com/d/1TRXGXEsM8CrtIZyXdC243zJsKOdE77gF" 
       },
       { 
         title: "IGKV NSS Foundation Day", 
         body: "Celebrating the roots of our service. A moment to reflect on the history and impact of the NSS unit at our institution.",
-        photo: "https://lh3.googleusercontent.com/d/1PlKTxbmxoUerpj_fqkYBWVyRUl0q1Zmk" 
+        photo: "https://lh3.googleusercontent.com/d/1gA2C4VTQFMNT3A0-l8z1wgBL3ZYixgti" 
       },
       { 
         title: "Cleanliness Drive", 
         body: "Living the Swachh Bharat mission. Armed with brooms and dedication, we transformed our surrounding environment.",
-        photo: "https://lh3.googleusercontent.com/d/1S8zSynpn3rGu3u0Z34tLofGrwc84whsV" 
+        photo: "https://lh3.googleusercontent.com/d/1m5NRygyRDrJleLqof4ynjnopUBI4aY4T" 
       },
       { 
         title: "Induction Program", 
         body: "Welcoming the fresh faces into the NSS family. The start of a new chapter of service for our juniors.",
-        photo: "https://lh3.googleusercontent.com/d/1ZY5e5ux9vtZE5qP5T6yAXDyvy0hDQkCP" 
+        photo: "https://lh3.googleusercontent.com/d/11JYMPierfuYeRcQbZrYnpVYw7Byz_fif" 
       },
       { 
         title: "Chitra-Varnan Pratiyogita", 
         body: "Where creativity met social awareness. Volunteers used art to describe the reality of the society around them.",
-        photo: "https://lh3.googleusercontent.com/d/1YCMv__J7O46wWMqKQ8rGx9lsH2YZJ2dn" 
+        photo: "https://lh3.googleusercontent.com/d/1khmiyDcNhrAuNuyFqxCg5od8ORbacJTt" 
       },
       { 
         title: "Tug Of War", 
         body: "Unity, strength, and sportsmanship. A day of physical grit where we learned that we are stronger when we pull together.",
-        photo: "https://lh3.googleusercontent.com/d/1n93eiF7sqJrDv5fkMuhR2S0s2WODu9gV" 
+        photo: "https://lh3.googleusercontent.com/d/1zoyjTewg6o3ZZ8Z_d_1winTGQZG2BONO" 
       },
       { 
         title: "Diwali Awareness", 
         body: "Spreading the light of safety. Educating the community on an eco-friendly and responsible celebration of lights.",
-        photo: "https://lh3.googleusercontent.com/d/1CvZD5tCslRwy7dbxH2MFYh8_QXc3vtDq" 
+        photo: "https://lh3.googleusercontent.com/d/1oF93mRIE9oHCrVaFY_3gC322Ly-yvvAo" 
       },
       { 
         title: "Blood Donation Camp 2024", 
         body: "The ultimate gift. Seniors and juniors joined hands to save lives, proving that service flows in our veins.",
-        photo: "https://lh3.googleusercontent.com/d/1efULAvK5Rp0H4K0p3cUOtaBjItmivOsE" 
+        photo: "https://lh3.googleusercontent.com/d/1T9jV4y3L1NRzBFa3SUuNm9_OECnLrbwx" 
       }
     ]
   },
@@ -81,47 +81,37 @@ const TIMELINE = [
       { 
         title: "National Youth Day", 
         body: "Celebrating the birth of Swami Vivekananda. Empowering the youth to take charge of the nation's future.",
-        photo: "https://lh3.googleusercontent.com/d/135BLNlSAJRr6wiBBmbQl77E5xjTziER9" 
+        photo: "https://lh3.googleusercontent.com/d/1beIWoyIWHorI24O5jm0nbC7iTGyK1EWq" 
       },
       { 
         title: "National Girl Child Day", 
         body: "Advocating for equality and empowerment. Spreading awareness about the rights and potential of every girl child.",
-        photo: "https://lh3.googleusercontent.com/d/1kjEAf1G3zjr7MwKIp0a7lEiCIMthvfT_" 
-      },
-      { 
-        title: "Road Safety Week", 
-        body: "Service on the streets. Educating commuters on traffic rules to ensure everyone reaches home safely.",
-        photo: "https://lh3.googleusercontent.com/d/1SRmJbkSsI_sMHbF1Cjgg_W1l7JJE9R0J" 
+        photo: "https://lh3.googleusercontent.com/d/1R7oCmkFMgsNaEn_qUMRI4bCfYUVgducn" 
       },
       { 
         title: "7-Day Special Camp", 
         body: "Life in the village. Seven days of shramadaan, community surveys, and bonds that will last a lifetime.",
-        photo: "https://lh3.googleusercontent.com/d/1iRf3jAjJCmewZ0ub3h4o_yZdGCJi1P8L" 
+        photo: "https://lh3.googleusercontent.com/d/1iRf3jAjJCmewZOub3h4o_yZdGCJilP8L" 
       },
       { 
         title: "B Certificate Exam", 
         body: "A milestone in the NSS journey. Demonstrating our theoretical and practical knowledge of social service.",
-        photo: "https://lh3.googleusercontent.com/d/1RCoTaOk7_bkj-xdFJkGu5N1OKX8Mguyd" 
+        photo: "https://lh3.googleusercontent.com/d/1RJLbJq9afAU-0lVybU0wxfPNOyJUqqpn" 
       },
       { 
         title: "Rabindranath Tagore Jayanti", 
         body: "Celebrating the Bard of Bengal. A cultural tribute to the man who gave us the anthem of our service.",
-        photo: "https://lh3.googleusercontent.com/d/13nQ7H9CEHWbSLM8Apt7hkO2Xp64M1CB8" 
+        photo: "https://lh3.googleusercontent.com/d/1r9JIlaZqfvISkxJpXr8GlBJO4cZr48Cw" 
       },
       { 
         title: "Ek Ped Maa Ke Naam 2.0", 
         body: "Sustainable service. Planting saplings in honor of our mothers, securing a greener future for the generations to come.",
-        photo: "https://lh3.googleusercontent.com/d/1IUEOVQ5bNbYOO6nD9XFG-wPJk7ZQzjXw" 
-      },
-      { 
-        title: "Digital Poster Making Competition", 
-        body: "Using modern tools for age-old causes. Volunteers designed impactful digital art to spread social awareness.",
-        photo: "https://lh3.googleusercontent.com/d/1j5uApjwte_Qj7HJXtsPVFjavHazoWgHW" 
+        photo: "https://lh3.googleusercontent.com/d/19VoQJ-EVg3UmvaWnnbEiGGY_xOLddRP3" 
       },
       { 
         title: "International Yoga Day", 
         body: "Harmony of mind and body. A morning of collective wellness under the rising sun.",
-        photo: "https://lh3.googleusercontent.com/d/1T8rZ_ZyTPCXoRzlmOGH90WcKz9vZcQ5M" 
+        photo: "https://lh3.googleusercontent.com/d/1jhDIDbw-jGZAITCVthw_4BJfSw3Ke07U" 
       },
       { 
         title: "Sarv-Hitaya", 
@@ -131,12 +121,7 @@ const TIMELINE = [
       { 
         title: "Independence Day 2025", 
         body: "The tricolor flies high. A day of patriotic fervor and a renewed pledge to serve the motherland.",
-        photo: "https://lh3.googleusercontent.com/d/1v6Se-d04n5011WE61Hu88GrB4mdVIych" 
-      },
-      { 
-        title: "1st Year Induction", 
-        body: "Passing the torch. Welcoming the new batch of volunteers and teaching them the spirit of 'Not Me, But You'.",
-        photo: "https://lh3.googleusercontent.com/d/1SfIoI6V87JVOVeUJLygMkro3z1tZGYck" 
+        photo: "https://lh3.googleusercontent.com/d/1SYowk2kpqtPazDmTfv63EvoERFzkO-BV" 
       },
       { 
         title: "Flash Mob HIV/AIDS Awareness", 
@@ -146,12 +131,12 @@ const TIMELINE = [
       { 
         title: "Raktdaan Amrit Mahotsav 2.0", 
         body: "Another massive milestone in saving lives. A day of sacrifice and immense pride for our unit.",
-        photo: "https://lh3.googleusercontent.com/d/1-OoMvpDK_-_FihCeNkvw8awnYLzWsaE0" 
+        photo: "https://lh3.googleusercontent.com/d/1lKU4LKWvcrwZcbmpi_U5O8q1EXhrM565" 
       },
       { 
         title: "Oath Taking Seva Pakhwada", 
         body: "A fortnight of commitment. Renewing our vows to remain selfless and dedicated to the mission of service.",
-        photo: "https://lh3.googleusercontent.com/d/1gOEB-uxa2Dg7V5JmCA2YGe_GgKXUApce" 
+        photo: "https://lh3.googleusercontent.com/d/1dxRa-TQE9of8OrsVwsWHqMlFUO1zzL9D" 
       },
       { 
         title: "NSS Foundation Day", 
@@ -161,7 +146,7 @@ const TIMELINE = [
       { 
         title: "Diwali Awareness And Fundraising", 
         body: "Bringing lights to the dark corners. Raising funds through charity to support those in need during the festive season.",
-        photo: "https://lh3.googleusercontent.com/d/1RCoTaOk7_bkj-xdFJkGu5N1OKX8Mguyd" 
+        photo: "https://lh3.googleusercontent.com/d/1h6q8xde2uyX1JdpROsHGWSi_dM3TRTqX" 
       },
       { 
         title: "One Day Camp", 
@@ -186,7 +171,7 @@ const TIMELINE = [
       { 
         title: "Run For Swadeshi", 
         body: "Fitness meets nationalism. A marathon dedicated to promoting local products and a healthy lifestyle.",
-        photo: "https://lh3.googleusercontent.com/d/1Aalmm41I-6yDlFZS_GIqvqi5-7ugf8Or" 
+        photo: "https://lh3.googleusercontent.com/d/11-PCcR-oPuslcrg5wi52uKASN6_iG2tr" 
       },
       { 
         title: "7-Day Special Unit Camp", 
