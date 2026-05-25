@@ -17,8 +17,6 @@ export const Route = createFileRoute("/wall")({
   component: WallPage,
 });
 
-const NOTE_COLORS = ['#fef9c3', '#fce7f3', '#dbeafe', '#dcfce7', '#ede9fe'];
-
 function WallPage() {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef(null);
@@ -38,113 +36,88 @@ function WallPage() {
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName || !newMessage) return;
-    
-    // FIX: Using 'contents' to match your previous setup
     const { error } = await supabase.from('messages').insert([{ name: newName, contents: newMessage }]);
-    
-    if (!error) { 
-      setNewName(""); 
-      setNewMessage(""); 
-      fetchNotes(); 
-    } else {
-      console.error(error);
-      alert("Error posting. Check Supabase connection.");
-    }
+    if (!error) { setNewName(""); setNewMessage(""); fetchNotes(); }
   };
 
   useEffect(() => {
     if (!vantaEffect) {
       setVantaEffect(CLOUDS({
         el: vantaRef.current, THREE: THREE, mouseControls: true, touchControls: true,
-        backgroundColor: 0x02040a, skyColor: 0x050a1a, cloudColor: 0x1e293b, speed: 1.2 
+        /* BRIGHT CLOUD COLORS */
+        backgroundColor: 0xf1eef7, 
+        skyColor: 0x244681,   
+        cloudColor: 0x143047,
+        cloudShadowColor: 0xf5f9fc,
+        sunColor: 0xfff9f2,
+        sunGlareColor: 0xfff9f7,
+        sunlightColor: 0xf7f4f0,
+        speed: 1.0 
       }));
     }
     return () => { if (vantaEffect) vantaEffect.destroy(); };
   }, [vantaEffect]);
 
-  const getNoteStyle = (id: any) => {
-    const num = typeof id === 'number' ? id : (id?.length || 0);
-    return {
-      color: NOTE_COLORS[num % NOTE_COLORS.length],
-      rotate: (num % 7) - 3 
-    };
-  };
-
   return (
-    <div className="relative min-h-screen text-foreground overflow-x-hidden selection:bg-accent/20">
+    <div className="relative min-h-screen text-slate-900 overflow-x-hidden selection:bg-accent/20">
       <TopNav />
+      {/* Background Layers */}
       <div ref={vantaRef} className="fixed inset-0 z-0 pointer-events-none" />
-      <div className="fixed inset-0 bg-black/50 pointer-events-none z-[1]" />
+      <div className="fixed inset-0 bg-white/10 pointer-events-none z-[1]" />
 
       <div className="relative z-10 pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
-          
           <div className="text-center mb-16">
             <Reveal>
-              <p className="font-script text-accent text-4xl mb-2 italic">leave your mark</p>
-              <h1 className="font-display text-6xl sm:text-8xl text-white tracking-tighter drop-shadow-2xl">Memory Wall</h1>
+              <p className="font-script text-[#c81e1e] text-4xl mb-2 italic">leave your mark</p>
+              <h1 className="font-display text-6xl sm:text-8xl text-[#060642] tracking-tighter drop-shadow-sm">Memory Wall</h1>
             </Reveal>
           </div>
 
+          {/* Submission Form (Light Glassmorphism) */}
           <section className="max-w-2xl mx-auto mb-24 relative z-50">
-            <form onSubmit={handleAddNote} className="bg-black/60 backdrop-blur-2xl border border-white/10 p-10 rounded-[2.5rem] shadow-2xl">
-              <h3 className="text-accent font-display text-3xl mb-8 italic">Write a Note...</h3>
-              <input type="text" placeholder="Your name" value={newName} onChange={(e) => setNewName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 mb-6 text-white focus:border-accent/50 outline-none transition-all placeholder:text-white/20"/>
-              <textarea placeholder="Share a memory..." rows={3} value={newMessage} onChange={(e) => setNewMessage(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 mb-8 text-white focus:border-accent/50 outline-none transition-all resize-none placeholder:text-white/20"/>
+            <form onSubmit={handleAddNote} className="bg-white/60 backdrop-blur-2xl border border-white/80 p-10 rounded-[2.5rem] shadow-2xl">
+              <h3 className="text-[#060642] font-display text-3xl mb-8 italic">Write a Note...</h3>
+              <input 
+                type="text" placeholder="Your name" value={newName} 
+                onChange={(e) => setNewName(e.target.value)} 
+                className="w-full bg-white/80 border border-slate-200 rounded-2xl px-6 py-4 mb-6 text-[#060642] focus:border-[#244681]/50 outline-none transition-all placeholder:text-slate-400 shadow-sm"
+              />
+              <textarea 
+                placeholder="Share a memory..." rows={3} value={newMessage} 
+                onChange={(e) => setNewMessage(e.target.value)} 
+                className="w-full bg-white/80 border border-slate-200 rounded-2xl px-6 py-4 mb-8 text-[#060642] focus:border-[#244681]/50 outline-none transition-all resize-none placeholder:text-slate-400 shadow-sm"
+              />
               <div className="flex justify-end">
-                <button type="submit" className="px-10 py-4 bg-accent text-black font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)]">Pin to Wall</button>
+                <button type="submit" className="px-10 py-4 bg-[#060642] text-white font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all shadow-xl">
+                  Pin to Wall
+                </button>
               </div>
             </form>
           </section>
 
-          {/* 🧱 CORKBOARD */}
-          <div className="bg-corkboard p-8 sm:p-12 rounded-3xl min-h-[400px] shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
-            {loading ? (
-              <p className="text-center text-white/20 font-display italic">Scanning the board...</p>
-            ) : (
-              <div className="columns-1 sm:columns-2 lg:columns-3 gap-10">
-                <AnimatePresence>
-                  {notes.map((note: any) => {
-                    const style = getNoteStyle(note.id);
-                    return (
-                      <motion.div 
-                        key={note.id} 
-                        initial={{ y: -200, rotate: -10, opacity: 0 }} 
-                        animate={{ y: 0, rotate: style.rotate, opacity: 1 }} 
-                        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                        className="break-inside-avoid mb-12 group relative"
-                      >
-                        <div 
-                          style={{ backgroundColor: style.color }}
-                          className="relative p-8 shadow-[3px_4px_12px_rgba(0,0,0,0.25)] transition-transform hover:scale-105 hover:z-50 cursor-default"
-                        >
-                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-3xl drop-shadow-md">📌</div>
-
-                          {/* SAFETY FIX: Checks for contents OR content */}
-                          <p className="font-handwritten text-2xl leading-relaxed italic mb-8">
-                            "{note.contents || note.content}"
-                          </p>
-
-                          <div className="flex justify-between items-end border-t border-black/10 pt-6 font-handwritten">
-                            <div>
-                              <p className="text-xl font-bold">{note.name}</p>
-                              <p className="text-[10px] uppercase tracking-widest opacity-40">
-                                {new Date(note.created_at).toLocaleDateString()}
-                              </p>
-                            </div>
-                            <img 
-                              src={eminenceLogo} 
-                              className="w-8 h-8 object-contain opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" 
-                              alt="icon" 
-                            />
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-              </div>
-            )}
+          {/* Memory Notes Grid (Bright Polaroids) */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-10">
+            <AnimatePresence>
+              {notes.map((note: any) => (
+                <motion.div key={note.id} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="break-inside-avoid mb-10 group relative">
+                  <div className="relative p-8 bg-white/80 backdrop-blur-lg border-t-4 border-[#c81e1e] shadow-xl transition-all group-hover:-translate-y-2 group-hover:shadow-2xl">
+                    {/* Folded Corner Effect (Lighter) */}
+                    <div className="absolute top-0 right-0 w-8 h-8 bg-slate-200" style={{ clipPath: 'polygon(0 0, 100% 100%, 0 100%)' }} />
+                    
+                    <p className="font-script text-[#060642] text-2xl leading-relaxed italic opacity-95 mb-8">"{note.contents}"</p>
+                    
+                    <div className="flex justify-between items-end border-t border-slate-100 pt-6">
+                      <div>
+                        <p className="font-display text-[#244681] text-xl tracking-wide">{note.name}</p>
+                        <p className="text-[10px] text-slate-400 tracking-[0.3em] uppercase mt-1">{new Date(note.created_at).toLocaleDateString()}</p>
+                      </div>
+                      <img src={eminenceLogo} className="w-8 h-8 object-contain opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" alt="icon" />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         </div>
       </div>
