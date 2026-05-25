@@ -59,7 +59,10 @@ function MemoriesPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageLoading, setImageLoading] = useState(true);
 
-  const shuffledHighlights = useMemo(() => [...RAW_PHOTOS].sort(() => Math.random() - 0.5), []);
+  // PICK ONLY 8 RANDOM PHOTOS
+  const shuffledHighlights = useMemo(() => {
+    return [...RAW_PHOTOS].sort(() => Math.random() - 0.5).slice(0, 8);
+  }, []);
 
   const nextSlide = () => { setImageLoading(true); setCurrentSlide((prev) => (prev + 1) % shuffledHighlights.length); };
   const prevSlide = () => { setImageLoading(true); setCurrentSlide((prev) => (prev - 1 + shuffledHighlights.length) % shuffledHighlights.length); };
@@ -119,18 +122,19 @@ function MemoriesPage() {
 
       <div className="relative z-10">
         
-        {/* HERO SLIDESHOW - UPDATED FOR VERTICAL PHOTOS */}
+        {/* HERO SLIDESHOW - COMPACT & CENTERED */}
         {!activeAlbumId && (
           <section className="pt-32 pb-12 px-6">
             <div className="max-w-7xl mx-auto">
               <Reveal>
-                <div className="mb-10">
+                <div className="mb-10 text-center sm:text-left">
                   <p className="text-[#c81e1e] font-black uppercase tracking-[0.4em] text-[10px] mb-2">Moments of Service</p>
                   <h2 className="font-display text-5xl sm:text-7xl text-[#060642] tracking-tighter">Highlights</h2>
                 </div>
               </Reveal>
 
-              <div className="group relative h-[500px] sm:h-[750px] w-full rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white bg-white/20 backdrop-blur-md">
+              {/* SLIDE CONTAINER: Adjusted height and added max-width for better fit */}
+              <div className="group relative h-[400px] sm:h-[550px] max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white bg-white/20 backdrop-blur-md">
                 
                 {imageLoading && (
                     <div className="absolute inset-0 flex items-center justify-center z-20 bg-white/10 backdrop-blur-sm">
@@ -153,12 +157,12 @@ function MemoriesPage() {
                       referrerPolicy="no-referrer"
                       className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-110"
                     />
-                    {/* Sharp Foreground Layer (Contain avoids cropping) */}
+                    {/* Sharp Foreground Layer */}
                     <img
                       src={getDriveUrl(shuffledHighlights[currentSlide])}
                       onLoad={() => setImageLoading(false)}
                       referrerPolicy="no-referrer"
-                      className="relative z-10 w-full h-full object-contain p-4 sm:p-12"
+                      className="relative z-10 w-full h-full object-contain p-4 sm:p-8"
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -166,17 +170,17 @@ function MemoriesPage() {
                 <div onClick={prevSlide} className="absolute left-0 inset-y-0 w-1/4 z-30 cursor-pointer" />
                 <div onClick={nextSlide} className="absolute right-0 inset-y-0 w-1/4 z-30 cursor-pointer" />
 
-                <div className="absolute inset-0 flex items-center justify-between px-8 opacity-0 group-hover:opacity-100 transition-all z-40 pointer-events-none">
-                   <button onClick={prevSlide} className="w-14 h-14 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 text-[#060642]"><ChevronLeft /></button>
-                   <button onClick={nextSlide} className="w-14 h-14 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 text-[#060642]"><ChevronRight /></button>
+                <div className="absolute inset-0 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-all z-40 pointer-events-none">
+                   <button onClick={prevSlide} className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 text-[#060642] transition-transform"><ChevronLeft /></button>
+                   <button onClick={nextSlide} className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg pointer-events-auto hover:scale-110 text-[#060642] transition-transform"><ChevronRight /></button>
                 </div>
 
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-40">
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2.5 z-40">
                    {shuffledHighlights.map((_, i) => (
                       <button 
                         key={i} 
                         onClick={(e) => { e.stopPropagation(); setCurrentSlide(i); setImageLoading(true); }}
-                        className={`h-2 rounded-full transition-all ${i === currentSlide ? "w-10 bg-[#c81e1e]" : "w-2 bg-white/40 hover:bg-white"}`} 
+                        className={`h-1.5 rounded-full transition-all ${i === currentSlide ? "w-8 bg-[#c81e1e]" : "w-1.5 bg-white/40 hover:bg-white"}`} 
                       />
                    ))}
                 </div>
@@ -220,7 +224,7 @@ function MemoriesPage() {
             )}
 
             {activeAlbumId && (
-              <button onClick={() => setActiveAlbumId(null)} className="mb-12 flex items-center gap-2 mx-auto text-[#060642] font-black uppercase tracking-widest text-[10px]"><ChevronLeft size={14} /> Back to Vault</button>
+              <button onClick={() => setActiveAlbumId(null)} className="mb-12 flex items-center gap-2 mx-auto text-[#060642] font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-all"><ChevronLeft size={14} /> Back to Vault</button>
             )}
 
             <AnimatePresence mode="wait">
@@ -233,7 +237,7 @@ function MemoriesPage() {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                   {filteredAlbums.map((album) => (
                     <div key={album.id} onClick={() => setActiveAlbumId(album.id)}
-                      className="group cursor-pointer relative aspect-square rounded-[2.5rem] overflow-hidden border border-white/60 bg-white/40 backdrop-blur-md shadow-xl"
+                      className="group cursor-pointer relative aspect-square rounded-[2.5rem] overflow-hidden border border-white/60 bg-white/40 backdrop-blur-md shadow-xl transition-transform hover:-translate-y-2"
                     >
                       {album.cover && <img src={album.cover} referrerPolicy="no-referrer" className="absolute inset-0 h-full w-full object-cover opacity-80 group-hover:scale-110 transition-all duration-1000" />}
                       <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/20 to-transparent flex flex-col justify-end p-10">
