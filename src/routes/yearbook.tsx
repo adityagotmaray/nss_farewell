@@ -1,8 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
+import * as THREE from "three";
+// @ts-ignore
+import CLOUDS from "vanta/dist/vanta.clouds.min"; 
 import { motion, AnimatePresence } from "framer-motion";
-import TopNav from "../components/TopNav.tsx";
-import { Reveal, FONT_LINKS } from "../components/Tribute-UI.tsx";
+import TopNav from "../components/TopNav";
+import { Reveal, FONT_LINKS } from "../components/Tribute-UI";
 
 export const Route = createFileRoute("/yearbook")({
   head: () => ({
@@ -12,20 +15,41 @@ export const Route = createFileRoute("/yearbook")({
   component: YearbookPage,
 });
 
-// ADD YOUR SENIORS HERE (Unchanged data)
 const SENIORS = [
-  { name: "Dr. Anand Tamrakar", major: "FACULTY", role: "PO", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv", quote: "Leadership is service." },
-  { name: "Mr. Ayush Sahu", major: "FACULTY", role: "SEC", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv", quote: "Impact over intensity." },
-  { name: "Dhanendra kumar sahu", major: "CSE", role: "Dal Nayak", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv", quote: "Service is rent for space." },
-  // ... more seniors ...
+  { name: "Dr. Anand Tamrakar", major: "Professor", role: "PO", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Mr. Ayush Sahu", major: "Coordinator", role: "SEC", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
+  { name: "Dhanendra kumar sahu", major: "CSE", role: "Dal Nayak", photo: "https://lh3.googleusercontent.com/d/1AsBrFFgMxpZED0lBX5qCSP8HUsLTk9Mv" },
 ];
 
 function YearbookPage() {
+  const [vantaEffect, setVantaEffect] = useState<any>(null);
+  const vantaRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
 
-  // Logic for the "Scattered photos on a table" look
-  const rotations = useMemo(() => SENIORS.map(() => (Math.random() * 4 - 2).toFixed(2)), []);
+  useEffect(() => {
+    if (!vantaEffect && vantaRef.current) {
+      setVantaEffect(CLOUDS({
+        el: vantaRef.current,
+        THREE: THREE,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        // ADJUSTED THESE TO MATCH YOUR SCREENSHOT BETTER
+        scale: 1.00,
+        backgroundColor: 0xf1eef7, // The Pink
+        skyColor: 0x244681,   
+        cloudColor: 0x143047,
+        cloudShadowColor: 0xf5f9fc,
+        sunColor: 0xfff9f2,
+        sunGlareColor: 0xfff9f7,
+        sunlightColor: 0xf7f4f0
+      }));
+    }
+    return () => { if (vantaEffect) vantaEffect.destroy(); };
+  }, [vantaEffect]);
 
   const filteredSeniors = SENIORS.filter(s => {
     const matchesSearch = s.name.toLowerCase().includes(search.toLowerCase());
@@ -36,67 +60,77 @@ function YearbookPage() {
   const roles = ["All", ...new Set(SENIORS.map(s => s.role))];
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen overflow-x-hidden">
       <TopNav />
+      {/* Vanta Canvas */}
+      <div ref={vantaRef} className="fixed inset-0 z-0" />
+      
+      {/* MISTY OVERLAY: This blends the top nav into the clouds */}
+      <div className="fixed inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/30 pointer-events-none z-[1]" />
 
-      <div className="relative z-10 pt-32 pb-20 px-6">
+      <div className="relative z-10 pt-44 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <Reveal>
-              <p className="text-accent text-[10px] uppercase tracking-[0.5em] font-bold mb-4">Batch 2022—2026</p>
-              <h1 className="font-display text-6xl sm:text-8xl italic text-shiny-gold uppercase">The Yearbook</h1>
+              <p className="text-[#c81e1e] text-[10px] uppercase tracking-[0.5em] font-black mb-4">Batch 2022—2026</p>
+              <h1 className="font-display text-7xl sm:text-9xl text-[#060642] tracking-tighter mb-4 drop-shadow-2xl">
+                Yearbook
+              </h1>
             </Reveal>
           </div>
 
-          {/* Search/Filters */}
-          <div className="max-w-4xl mx-auto mb-16 space-y-6">
+          {/* SEARCH BAR: Made more "Glassy" and less "Solid White" */}
+          <div className="max-w-4xl mx-auto mb-20 space-y-6">
             <input 
               type="text" placeholder="Search by name..." value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl px-8 py-5 text-white focus:border-accent/40 outline-none backdrop-blur-xl transition-all"
+              className="w-full bg-white/40 border border-white/60 rounded-[2rem] px-10 py-7 text-[#060642] focus:ring-4 focus:ring-white/20 outline-none backdrop-blur-xl shadow-2xl placeholder:text-[#060642]/40 text-xl font-medium"
             />
+            
             <div className="flex flex-wrap justify-center gap-3">
               {roles.map(r => (
-                <button key={r} onClick={() => setFilter(r)} className={`px-6 py-2 rounded-full text-[10px] font-bold border transition-all ${filter === r ? "bg-accent text-black" : "text-white/40 border-white/10"}`}>{r?.toUpperCase()}</button>
+                <button
+                  key={r} onClick={() => setFilter(r)}
+                  className={`px-8 py-3 rounded-full text-[10px] font-black tracking-widest border transition-all ${
+                    filter === r 
+                    ? "bg-[#060642] text-white border-[#060642] shadow-xl" 
+                    : "bg-white/20 text-[#060642] border-white/40 backdrop-blur-md hover:bg-white/40"
+                  }`}
+                >
+                  {r?.toUpperCase()}
+                </button>
               ))}
             </div>
           </div>
 
-          {/* THE SCATTERED GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
             <AnimatePresence mode="popLayout">
-              {filteredSeniors.map((s, i) => (
-                <motion.div
-                  key={s.name}
-                  initial={{ opacity: 0, scale: 0.8, y: 30, rotate: rotations[i] }}
-                  animate={{ opacity: 1, scale: 1, y: 0, rotate: rotations[i] }}
-                  transition={{ duration: 0.6, delay: i * 0.05 }}
-                  whileHover={{ rotate: 0, scale: 1.05, zIndex: 50 }}
-                  className="group [perspective:1000px] aspect-[4/5] cursor-pointer"
-                >
-                  <div className="relative w-full h-full transition-all duration-[0.8s] preserve-3d group-hover:[transform:rotateY(180deg)]">
-                    
-                    {/* FRONT: THE POLAROID */}
-                    <div className="absolute inset-0 backface-hidden paper-texture p-4 pb-16 shadow-2xl rounded-sm">
-                      <div className="w-full h-full overflow-hidden bg-black/5">
-                         <img src={s.photo} alt={s.name} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="absolute bottom-4 left-0 w-full text-center">
-                         <p className="text-handwritten text-3xl">{s.name}</p>
-                      </div>
+              {filteredSeniors.map((s) => {
+                const initials = s.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                return (
+                  <motion.div key={s.name} layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+                    className="group relative aspect-[3/4] rounded-[3rem] overflow-hidden border border-white/60 bg-white/20 backdrop-blur-md shadow-2xl transition-all hover:-translate-y-3"
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {s.photo ? (
+                        <img src={s.photo} alt={s.name} className="h-full w-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" />
+                      ) : (
+                        <span className="font-display text-[100px] text-[#060642]/10">{initials}</span>
+                      )}
                     </div>
 
-                    {/* BACK: THE DETAILS */}
-                    <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)] paper-texture p-8 flex flex-col justify-center items-center text-center rounded-sm border-2 border-accent/20">
-                      <h3 className="font-display text-2xl text-black mb-2">{s.name}</h3>
-                      <p className="text-accent font-bold uppercase text-[10px] mb-4">{s.role}</p>
-                      <p className="text-black/60 italic font-serif text-sm border-t border-black/5 pt-4">"{s.quote}"</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/10 to-transparent flex flex-col justify-end p-10">
+                       <p className="text-[#c81e1e] text-[10px] tracking-[0.3em] font-black mb-1 uppercase">{s.major}</p>
+                       <h3 className="font-display text-4xl text-[#060642] leading-tight mb-2">{s.name}</h3>
+                       <div className="pt-4 border-t border-black/5 flex justify-between items-center">
+                          <span className="text-[10px] font-black text-[#060642]/40 tracking-widest uppercase">{s.role}</span>
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_15px_rgba(200,30,30,0.4)]" />
+                       </div>
                     </div>
-
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </div>
         </div>
