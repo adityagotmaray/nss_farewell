@@ -37,7 +37,7 @@
   --color-nss-gold: oklch(0.82 0.13 78);
 
   --font-display: "Playfair Display", Georgia, serif;
-  --font-script: "Caveat", "Comic Sans MS", cursive;
+  --font-script: "Caveat", cursive;
   --font-body: "Inter", system-ui, sans-serif;
 }
 
@@ -79,6 +79,7 @@
     color: var(--color-foreground);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 
@@ -89,211 +90,101 @@
     background-clip: text;
     color: transparent;
   }
-  
+
+  /* 12. BRIGHTER AURORA & STARFIELD */
+  .bg-aurora-container {
+    background-color: #02040a;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35; /* Increased visibility */
+    animation: drift-aurora 25s ease-in-out infinite alternate;
+  }
+
   .starfield {
     background-image:
       radial-gradient(1px 1px at 10% 20%, #fff7, transparent),
-      radial-gradient(1px 1px at 30% 70%, #fff5, transparent),
       radial-gradient(1.5px 1.5px at 60% 30%, #fff8, transparent),
-      radial-gradient(1px 1px at 80% 60%, #fff5, transparent),
       radial-gradient(1px 1px at 90% 10%, #fff7, transparent);
     background-size: 800px 800px;
-    animation: drift 60s linear infinite;
+    animation: drift-stars 60s linear infinite;
   }
 
-  .stars-layer {
-    background-image: 
-      radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1.5px 1.5px at 90px 40px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 300px 300px;
+  /* 14. CURSOR GLOW */
+  .cursor-glow {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 75%);
+    pointer-events: none;
+    position: fixed;
+    z-index: 9999;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  .animate-twinkle {
-    animation: twinkle 5s ease-in-out infinite;
+  /* 7. POLAROID / YEARBOOK STYLING */
+  .paper-texture {
+    background-color: #f5f0e8;
+    background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .text-handwritten {
+    font-family: "Caveat", cursive;
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+
+  .backface-hidden { backface-visibility: hidden; }
+  .preserve-3d { transform-style: preserve-3d; }
+
+  /* 15. MUSIC BUTTON */
+  .music-playing {
+    animation: music-pulse 2s infinite;
+  }
+
+  /* 8. CORKBOARD (WALL PAGE) */
+  .bg-corkboard {
+    background-color: #8b6914;
+    background-image: url("https://www.transparenttextures.com/patterns/cork-board.png");
+    border: 12px solid #5d4037;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
   }
 
   .animate-shine {
-    animation: shine 5s linear infinite;
+    animation: shine 4s linear infinite;
   }
-
-  .polaroid {
-    background: var(--nss-cream);
-    color: oklch(0.18 0.04 264);
-    padding: 12px 12px 36px;
-    box-shadow: var(--shadow-card);
-    transition: transform .4s ease;
-  }
-  .polaroid:hover { transform: translateY(-4px) rotate(0deg) scale(1.02); }
 }
 
-@keyframes drift {
-  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-  to   { background-position: 800px 800px, -800px 800px, 800px -800px, -800px -800px, 400px 400px; }
-}
-@keyframes breathing-glow {
-  0%, 100% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
-  50% { filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.6)); }
+/* KEYFRAMES (Standard CSS Level) */
+@keyframes drift-aurora {
+  from { transform: translate(-20%, -20%) scale(1); }
+  to   { transform: translate(20%, 20%) scale(1.4); }
 }
 
-.animate-breathing {
-  animation: breathing-glow 3s ease-in-out infinite;
-}
-@keyframes particle-drift {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  20% { opacity: 0.6; }
-  80% { opacity: 0.6; }
-  100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+@keyframes drift-stars {
+  from { background-position: 0 0; }
+  to   { background-position: 800px 800px; }
 }
 
-
-.dust-particle {
-  position: absolute;
-  background-color: #d4af37;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: particle-drift var(--duration) linear infinite;
-  animation-delay: var(--delay);
-  left: var(--left);
-  width: var(--size);
-  height: var(--size);
-}
-.cursor-blink {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background-color: #d4af37;
-  margin-left: 4px;
-  animation: blink 0.8s infinite;
+@keyframes shine {
+  to { background-position: 200% center; }
 }
 
-@keyframes blink {
-  50% { opacity: 0; }
-}
-.backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.preserve-3d {
-  transform-style: preserve-3d;
-}
-
-/* Authentic Paper Texture */
-.paper-texture {
-  background-color: #f5f0e8;
-  background-image: url("https://www.transparenttextures.com/patterns/paper.png");
-}
-
-/* NSS Theme specific addition */
-.text-handwritten {
-  font-family: "Caveat", cursive;
-  color: #1a1a1a;
-}
-.bg-corkboard {
-  background-color: #8b6914;
-  background-image: url("https://www.transparenttextures.com/patterns/cork-board.png");
-  border: 12px solid #5d4037; /* Dark wood frame */
-  box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
-}
-
-/* Handwriting for the notes */
-.font-handwritten {
-  font-family: "Caveat", cursive;
-  color: #1a202c;
-}
-@keyframes twinkle { 
-  0%, 100% { opacity: 0.1; } 
-  50% { opacity: 0.6; } 
-}
-/* Film Strip Aesthetic */
-.film-strip-container {
-  background: #050505;
-  padding: 25px 0;
-  position: relative;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.film-strip-container::before, 
-.film-strip-container::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 10px;
-  background-image: radial-gradient(circle, #1a1a1a 4px, transparent 4.5px);
-  background-size: 24px 10px;
-  z-index: 10;
-}
-
-.film-strip-container::before { top: 8px; }
-.film-strip-container::after { bottom: 8px; }
-
-.film-thumbnail {
-  flex: 0 0 auto;
-  width: 80px;
-  height: 60px;
-  object-cover: cover;
-  border-radius: 4px;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.film-thumbnail.active {
-  opacity: 1;
-  transform: scale(1.1);
-  border-color: #d4af37;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-}
-/* 12. Aurora Background Blobs */
-.aurora-container {
-  background-color: #02040a;
-  overflow: hidden;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-}
-
-.aurora-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.15;
-  animation: drift 25s ease-in-out infinite alternate;
-}
-
-@keyframes drift {
-  from { transform: translate(-10%, -10%) scale(1); }
-  to { transform: translate(15%, 15%) scale(1.3); }
-}
-
-/* 14. Cursor Glow */
-.cursor-glow {
-  width: 60px;
-  height: 60px;
-  background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 75%);
-  pointer-events: none;
-  position: fixed;
-  z-index: 9999;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* 15. Music Toggle Animation */
 @keyframes music-pulse {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
   70% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(212, 175, 55, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
 }
-.music-playing {
-  animation: music-pulse 2s infinite;
-}
 
-@keyframes shine {
-  to { background-position: 200% center; }
+@keyframes twinkle { 
+  0%, 100% { opacity: 0.1; } 
+  50% { opacity: 0.6; } 
 }
