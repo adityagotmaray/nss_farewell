@@ -20,7 +20,7 @@ export default function TopNav() {
           <img src={nssLogo} alt="NSS" className="h-10 w-10" />
           <div className="leading-tight">
             <p className="font-display text-sm sm:text-base text-[#060642] font-bold">NSS Farewell</p>
-            <p className="font-script text-[#216c90] text-xs sm:text-sm">Batch 2022 — 2026</p>
+            <p className="font-script text-[#ffffff] text-xs sm:text-sm">Batch 2022 — 2026</p>
           </div>
         </Link>
 
