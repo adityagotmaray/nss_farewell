@@ -162,7 +162,7 @@ const TIMELINE = [
       { 
         title: "1st Dec World AIDS Day", 
         body: "A global stand for health. Joining the world in spreading awareness and honoring those lost to the fight.",
-        photo: "https://lh3.googleusercontent.com/d/10MhtFSiXZLN4B9XSvwtGWPKcKkpnSFUe" 
+        photo: "https://lh3.googleusercontent.com/d/11fMbNGsqFk1EWeNOP2d7eFor3Ejed34J" 
       },
       { 
         title: "Samarpanam", 
